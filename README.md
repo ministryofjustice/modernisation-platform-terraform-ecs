@@ -1,4 +1,5 @@
-# ECS Module for Windows and Linux 
+<!--- BEGIN_TF_DOCS --->
+# ECS Module for Windows and Linux
 
 Terraform module that creates an ECS cluster solely for EC2 launch type. This is aimed for services which cannot use Fargate.
 
@@ -94,3 +95,4 @@ No modules.
 |---------------------|-----------------------------------------------------|
 | current_task_definition                 | The attributes of the created ECS task definition   |
 | cluster_ec2_security_group_id           | Security group id of EC2s used for ECS cluster      |
+<!--- END_TF_DOCS --->
