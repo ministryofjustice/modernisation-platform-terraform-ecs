@@ -24,7 +24,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        scan_type: changed
+        scan_type: single
 
   terraform-static-analysis-full-scan:
     name: Terraform Static Analysis - scan all directories
