@@ -44,6 +44,12 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
     id      = aws_launch_template.ec2-launch-template.id
     version = "$Latest"
   }
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.app_name}-cluster-scaling-group"
+    }
+  )
 }
 
 # EC2 Security Group
@@ -93,6 +99,11 @@ resource "aws_launch_template" "ec2-launch-template" {
 
   monitoring {
     enabled = true
+  }
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
   }
 
   iam_instance_profile {
