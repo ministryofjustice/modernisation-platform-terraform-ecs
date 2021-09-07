@@ -47,7 +47,7 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
 
   tag {
     key                 = "Name"
-    value               =  "${var.app_name}-cluster-scaling-group"
+    value               = "${var.app_name}-cluster-scaling-group"
     propagate_at_launch = true
   }
 
@@ -55,8 +55,8 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
     for_each = var.tags_common
 
     content {
-      key    =  tag.key
-      value   =  tag.value
+      key                 = tag.key
+      value               = tag.value
       propagate_at_launch = true
     }
   }
