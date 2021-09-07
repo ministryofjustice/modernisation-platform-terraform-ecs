@@ -44,12 +44,22 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
     id      = aws_launch_template.ec2-launch-template.id
     version = "$Latest"
   }
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "${var.app_name}-cluster-scaling-group"
+
+  tag {
+    key                 = "Name"
+    value               =  "${var.app_name}-cluster-scaling-group"
+    propagate_at_launch = true
+  }
+
+  dynamic "tag" {
+    for_each = var.tags_common
+
+    content {
+      key    =  tag.key
+      value   =  tag.value
+      propagate_at_launch = true
     }
-  )
+  }
 }
 
 # EC2 Security Group

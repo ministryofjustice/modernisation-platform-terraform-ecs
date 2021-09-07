@@ -25,10 +25,10 @@ variable "container_cpu" {
 
 variable "container_instance_type" {
   type = string
-  description = "Container OS being used ("windows" or "linux")"
+  description = "Container OS being used (windows or linux)"
   validation {
     condition     = contains(["windows", "linux"], var.container_instance_type)
-    error_message = "Valid values for var: container_instance_type are (windows, linux)"
+    error_message = "Valid values for var: container_instance_type are (windows, linux)."
   }
 }
 
@@ -71,8 +71,8 @@ variable "network_mode" {
   type = string
   description = "The network mode used for the containers in the task. If OS used is Windows network_mode must equal none."
   validation {
-    condition     = contains(["none", "bridge", "host", awsvpc], var.network_mode)
-    error_message = "Valid values for var: network_mode are (none, bridge, host, awsvpc)"
+    condition     = contains(["none", "bridge", "host", "awsvpc"], var.network_mode)
+    error_message = "Valid values for var: network_mode are (none, bridge, host, awsvpc)."
   }
 }
 
