@@ -1,30 +1,30 @@
 variable "ami_image_id" {
-  type = string
+  type        = string
   description = "EC2 AMI image to run in the ECS cluster"
 }
 
 variable "app_count" {
-  type = string
+  type        = string
   description = "Number of docker containers to run"
 }
 
 variable "app_name" {
-  type = string
+  type        = string
   description = "Name of the application"
 }
 
 variable "bastion_cidr" {
-  type = string
+  type        = string
   description = "CIDR of the bastion"
 }
 
 variable "container_cpu" {
-  type = string
+  type        = string
   description = "Container instance CPU units to provision (1 vCPU = 1024 CPU units)"
 }
 
 variable "container_instance_type" {
-  type = string
+  type        = string
   description = "Container OS being used (windows or linux)"
   validation {
     condition     = contains(["windows", "linux"], var.container_instance_type)
@@ -33,42 +33,42 @@ variable "container_instance_type" {
 }
 
 variable "container_memory" {
-  type = string
+  type        = string
   description = "Container instance memory to provision (in MiB)"
 }
 
 variable "ec2_desired_capacity" {
-  type = string
+  type        = string
   description = "Number of EC2s in the cluster"
 }
 
 variable "ec2_max_size" {
-  type = string
+  type        = string
   description = "Max Number of EC2s in the cluster"
 }
 
 variable "ec2_min_size" {
-  type = string
+  type        = string
   description = "Min Number of EC2s in the cluster"
 }
 
 variable "environment" {
-  type = string
+  type        = string
   description = "The environment where resources are to be created (development, test, preprod, production)"
 }
 
 variable "instance_type" {
-  type = string
+  type        = string
   description = "EC2 instance type to run in the ECS cluster"
 }
 
 variable "key_name" {
-  type = string
+  type        = string
   description = "Key to access EC2s in ECS cluster"
 }
 
 variable "network_mode" {
-  type = string
+  type        = string
   description = "The network mode used for the containers in the task. If OS used is Windows network_mode must equal none."
   validation {
     condition     = contains(["none", "bridge", "host", "awsvpc"], var.network_mode)
@@ -77,22 +77,22 @@ variable "network_mode" {
 }
 
 variable "public_cidrs" {
-  type = list(string)
+  type        = list(string)
   description = "Public subnet CIDR blocks"
 }
 
 variable "server_port" {
-  type = string
+  type        = string
   description = "The port the containers will be listening on"
 }
 
 variable "subnet_set_name" {
-  type = string
+  type        = string
   description = "The name of the subnet set associated with the account"
 }
 
 variable "tags_common" {
-  type = map(string)
+  type        = map(string)
   description = "Common tags to be used by all resources"
 }
 
@@ -109,21 +109,21 @@ variable "ec2_ingress_rules" {
 }
 
 variable "task_definition" {
-  type = string
+  type        = string
   description = "Task definition to be used by the ECS service"
 }
 
 variable "task_definition_volume" {
-  type = string
+  type        = string
   description = "Name of the volume referenced in the sourceVolume parameter of container definition in the mountPoints section"
 }
 
 variable "user_data" {
-  type = string
+  type        = string
   description = "The configuration used when creating EC2s used for the ECS cluster"
 }
 
 variable "vpc_all" {
-  type = string
+  type        = string
   description = "The full name of the VPC (including environment) used to create resources"
 }
