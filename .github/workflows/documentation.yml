@@ -1,4 +1,4 @@
-name: Generate Terraform docs
+name: Generate Terraform README docs
 on:
   workflow_dispatch:
   pull_request:
