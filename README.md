@@ -82,29 +82,29 @@ No Modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| ami\_image\_id | EC2 AMI image to run in the ECS cluster | `any` | n/a | yes |
-| app\_count | Number of docker containers to run | `any` | n/a | yes |
-| app\_name | Name of the application | `any` | n/a | yes |
-| bastion\_cidr | n/a | `any` | n/a | yes |
-| container\_cpu | Container instance CPU units to provision (1 vCPU = 1024 CPU units) | `any` | n/a | yes |
-| container\_instance\_type | n/a | `any` | n/a | yes |
-| container\_memory | Container instance memory to provision (in MiB) | `any` | n/a | yes |
-| ec2\_desired\_capacity | Number of EC2s in the cluster | `any` | n/a | yes |
-| ec2\_ingress\_rules | n/a | <pre>map(object({<br>    description     = string<br>    from_port       = number<br>    to_port         = number<br>    protocol        = string<br>    security_groups = list(string)<br>    cidr_blocks     = list(string)<br>  }))</pre> | n/a | yes |
-| ec2\_max\_size | Max Number of EC2s in the cluster | `any` | n/a | yes |
-| ec2\_min\_size | Min Number of EC2s in the cluster | `any` | n/a | yes |
-| environment | n/a | `any` | n/a | yes |
-| instance\_type | EC2 instance type to run in the ECS cluster | `any` | n/a | yes |
-| key\_name | Key to access EC2s in ECS cluster | `any` | n/a | yes |
-| network\_mode | n/a | `any` | n/a | yes |
-| public\_cidrs | n/a | `list(string)` | n/a | yes |
-| server\_port | n/a | `any` | n/a | yes |
-| subnet\_set\_name | n/a | `any` | n/a | yes |
-| tags\_common | n/a | `map(string)` | n/a | yes |
-| task\_definition | n/a | `any` | n/a | yes |
-| task\_definition\_volume | n/a | `any` | n/a | yes |
-| user\_data | n/a | `any` | n/a | yes |
-| vpc\_all | n/a | `any` | n/a | yes |
+| ami\_image\_id | EC2 AMI image to run in the ECS cluster | `string` | n/a | yes |
+| app\_count | Number of docker containers to run | `string` | n/a | yes |
+| app\_name | Name of the application | `string` | n/a | yes |
+| bastion\_cidr | CIDR of the bastion | `string` | n/a | yes |
+| container\_cpu | Container instance CPU units to provision (1 vCPU = 1024 CPU units) | `string` | n/a | yes |
+| container\_instance\_type | Container OS being used (windows or linux) | `string` | n/a | yes |
+| container\_memory | Container instance memory to provision (in MiB) | `string` | n/a | yes |
+| ec2\_desired\_capacity | Number of EC2s in the cluster | `string` | n/a | yes |
+| ec2\_ingress\_rules | Security group ingress rules for the cluster EC2s | <pre>map(object({<br>    description     = string<br>    from_port       = number<br>    to_port         = number<br>    protocol        = string<br>    security_groups = list(string)<br>    cidr_blocks     = list(string)<br>  }))</pre> | n/a | yes |
+| ec2\_max\_size | Max Number of EC2s in the cluster | `string` | n/a | yes |
+| ec2\_min\_size | Min Number of EC2s in the cluster | `string` | n/a | yes |
+| environment | The environment where resources are to be created (development, test, preprod, production) | `string` | n/a | yes |
+| instance\_type | EC2 instance type to run in the ECS cluster | `string` | n/a | yes |
+| key\_name | Key to access EC2s in ECS cluster | `string` | n/a | yes |
+| network\_mode | The network mode used for the containers in the task. If OS used is Windows network\_mode must equal none. | `string` | n/a | yes |
+| public\_cidrs | Public subnet CIDR blocks | `list(string)` | n/a | yes |
+| server\_port | The port the containers will be listening on | `string` | n/a | yes |
+| subnet\_set\_name | The name of the subnet set associated with the account | `string` | n/a | yes |
+| tags\_common | Common tags to be used by all resources | `map(string)` | n/a | yes |
+| task\_definition | Task definition to be used by the ECS service | `string` | n/a | yes |
+| task\_definition\_volume | Name of the volume referenced in the sourceVolume parameter of container definition in the mountPoints section | `string` | n/a | yes |
+| user\_data | The configuration used when creating EC2s used for the ECS cluster | `string` | n/a | yes |
+| vpc\_all | The full name of the VPC (including environment) used to create resources | `string` | n/a | yes |
 
 ## Outputs
 
