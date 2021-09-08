@@ -111,7 +111,7 @@ No Modules.
 | Name | Description |
 |------|-------------|
 | cluster\_ec2\_security\_group\_id | Security group id of EC2s used for ECS cluster |
-| current\_task\_definition | n/a |
+| current\_task\_definition | Displays task definition information and version being used |
 
 <!--- END_TF_DOCS --->
 
