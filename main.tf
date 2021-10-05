@@ -212,7 +212,11 @@ resource "aws_iam_policy" "ec2_instance_policy" {
                 "s3:ListBucket",
                 "s3:*Object*",
                 "kms:Decrypt",
-                "kms:Encrypt"
+                "kms:Encrypt",
+                "kms:GenerateDataKey",
+                "kms:ReEncrypt",
+                "kms:GenerateDataKey",
+                "kms:DescribeKey"
             ],
             "Resource": "*"
         }
