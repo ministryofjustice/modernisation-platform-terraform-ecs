@@ -208,7 +208,15 @@ resource "aws_iam_policy" "ec2_instance_policy" {
                 "ecr:GetDownloadUrlForLayer",
                 "ecr:BatchGetImage",
                 "logs:CreateLogStream",
-                "logs:PutLogEvents"
+                "logs:PutLogEvents",
+                "s3:ListBucket",
+                "s3:*Object*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:GenerateDataKey",
+                "kms:ReEncrypt",
+                "kms:GenerateDataKey",
+                "kms:DescribeKey"
             ],
             "Resource": "*"
         }
