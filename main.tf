@@ -244,6 +244,7 @@ resource "aws_ecs_task_definition" "windows_ecs_task_definition" {
   family             = "${var.app_name}-task-definition"
   count              = var.container_instance_type == "windows" ? 1 : 0
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn      = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = [
     "EC2",
   ]
@@ -353,6 +354,32 @@ data "aws_iam_policy_document" "ecs_task_execution_role" {
   }
 }
 
+resource "aws_iam_policy" "ecs_task_execution_s3_policy" {
+  name   = "${var.app_name}-ecs-task-execution-s3-policy"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:*Object*",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:ReEncrypt",
+        "kms:GenerateDataKey",
+        "kms:DescribeKey"
+      ],
+      "Resource": ["*"]
+    }
+  ]
+}
+EOF
+}
+
+
 # ECS task execution role
 resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "${var.app_name}-ecs-task-execution-role"
@@ -373,6 +400,10 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
 resource "aws_iam_role_policy_attachment" "ecs_task_secrets_manager" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_s3_access" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = aws_iam_policy.ecs_task_execution_s3_policy.arn
 }
 
 ##### ECS autoscaling ##########
