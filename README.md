@@ -26,7 +26,6 @@ module "ecs" {
   server_port              = local.app_data.accounts[local.environment].server_port
   app_count                = local.app_data.accounts[local.environment].app_count
   public_cidrs             = [data.aws_subnet.public_az_a.cidr_block, data.aws_subnet.public_az_b.cidr_block, data.aws_subnet.public_az_c.cidr_block]
-  bastion_cidr             = "${module.bastion_linux.bastion_private_ip}/32"
   tags_common              = local.tags
 
   depends_on               = [aws_ecr_repository.ecr_repo, aws_lb_listener.listener]
@@ -90,7 +89,6 @@ No modules.
 | <a name="input_ami_image_id"></a> [ami\_image\_id](#input\_ami\_image\_id) | EC2 AMI image to run in the ECS cluster | `string` | n/a | yes |
 | <a name="input_app_count"></a> [app\_count](#input\_app\_count) | Number of docker containers to run | `string` | n/a | yes |
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of the application | `string` | n/a | yes |
-| <a name="input_bastion_cidr"></a> [bastion\_cidr](#input\_bastion\_cidr) | CIDR of the bastion | `string` | n/a | yes |
 | <a name="input_container_cpu"></a> [container\_cpu](#input\_container\_cpu) | Container instance CPU units to provision (1 vCPU = 1024 CPU units) | `string` | n/a | yes |
 | <a name="input_container_instance_type"></a> [container\_instance\_type](#input\_container\_instance\_type) | Container OS being used (windows or linux) | `string` | n/a | yes |
 | <a name="input_container_memory"></a> [container\_memory](#input\_container\_memory) | Container instance memory to provision (in MiB) | `string` | n/a | yes |

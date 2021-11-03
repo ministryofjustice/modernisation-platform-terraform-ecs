@@ -13,11 +13,6 @@ variable "app_name" {
   description = "Name of the application"
 }
 
-variable "bastion_cidr" {
-  type        = string
-  description = "CIDR of the bastion"
-}
-
 variable "container_cpu" {
   type        = string
   description = "Container instance CPU units to provision (1 vCPU = 1024 CPU units)"
