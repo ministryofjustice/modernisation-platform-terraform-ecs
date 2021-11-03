@@ -26,7 +26,6 @@ module "ecs" {
   server_port              = local.app_data.accounts[local.environment].server_port
   app_count                = local.app_data.accounts[local.environment].app_count
   public_cidrs             = [data.aws_subnet.public_az_a.cidr_block, data.aws_subnet.public_az_b.cidr_block, data.aws_subnet.public_az_c.cidr_block]
-  bastion_cidr             = "${module.bastion_linux.bastion_private_ip}/32"
   tags_common              = local.tags
 
   depends_on               = [aws_ecr_repository.ecr_repo, aws_lb_listener.listener]
@@ -68,10 +67,12 @@ No modules.
 | [aws_ecs_task_definition.windows_ecs_task_definition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition) | resource |
 | [aws_iam_instance_profile.ec2_instance_profile](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
 | [aws_iam_policy.ec2_instance_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.ecs_task_execution_s3_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.ec2_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.ecs_task_execution_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.attach_ec2_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ecs_task_execution_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.ecs_task_s3_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ecs_task_secrets_manager](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_service_linked_role.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_service_linked_role) | resource |
 | [aws_launch_template.ec2-launch-template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
@@ -90,7 +91,6 @@ No modules.
 | <a name="input_ami_image_id"></a> [ami\_image\_id](#input\_ami\_image\_id) | EC2 AMI image to run in the ECS cluster | `string` | n/a | yes |
 | <a name="input_app_count"></a> [app\_count](#input\_app\_count) | Number of docker containers to run | `string` | n/a | yes |
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of the application | `string` | n/a | yes |
-| <a name="input_bastion_cidr"></a> [bastion\_cidr](#input\_bastion\_cidr) | CIDR of the bastion | `string` | n/a | yes |
 | <a name="input_container_cpu"></a> [container\_cpu](#input\_container\_cpu) | Container instance CPU units to provision (1 vCPU = 1024 CPU units) | `string` | n/a | yes |
 | <a name="input_container_instance_type"></a> [container\_instance\_type](#input\_container\_instance\_type) | Container OS being used (windows or linux) | `string` | n/a | yes |
 | <a name="input_container_memory"></a> [container\_memory](#input\_container\_memory) | Container instance memory to provision (in MiB) | `string` | n/a | yes |
