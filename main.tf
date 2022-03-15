@@ -234,7 +234,7 @@ resource "aws_iam_role_policy_attachment" "attach_ec2_policy" {
 //ECS cluster
 
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name    = var.app_name
+  name = var.app_name
   setting {
     name  = "containerInsights"
     value = "enabled"
