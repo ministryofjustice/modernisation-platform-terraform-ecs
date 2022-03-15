@@ -9,11 +9,13 @@ data "aws_ecs_task_definition" "task_definition" {
   depends_on      = [aws_ecs_task_definition.windows_ecs_task_definition, aws_ecs_task_definition.linux_ecs_task_definition]
 }
 
-
-data "aws_subnet_ids" "shared-private" {
-  vpc_id = data.aws_vpc.shared.id
+data "aws_subnets" "shared-private" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.shared.id]
+  }
   tags = {
-    "Name" = "${var.subnet_set_name}-private*"
+    Name = "${var.subnet_set_name}-private*"
   }
 }
 
@@ -35,7 +37,7 @@ resource "aws_iam_service_linked_role" "ecs" {
 }
 
 resource "aws_autoscaling_group" "cluster-scaling-group" {
-  vpc_zone_identifier = sort(data.aws_subnet_ids.shared-private.ids)
+  vpc_zone_identifier = sort(data.aws_subnets.shared-private.ids)
   desired_capacity    = var.ec2_desired_capacity
   max_size            = var.ec2_max_size
   min_size            = var.ec2_min_size
@@ -232,12 +234,15 @@ resource "aws_iam_role_policy_attachment" "attach_ec2_policy" {
 //ECS cluster
 
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name               = var.app_name
-  capacity_providers = [aws_ecs_capacity_provider.capacity_provider.name]
+  name = var.app_name
   setting {
     name  = "containerInsights"
     value = "enabled"
   }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "ecs_cluster" {
+  cluster_name = aws_ecs_cluster.ecs_cluster.name
 }
 
 resource "aws_ecs_task_definition" "windows_ecs_task_definition" {
