@@ -71,11 +71,6 @@ variable "network_mode" {
   }
 }
 
-variable "public_cidrs" {
-  type        = list(string)
-  description = "Public subnet CIDR blocks"
-}
-
 variable "server_port" {
   type        = string
   description = "The port the containers will be listening on"
