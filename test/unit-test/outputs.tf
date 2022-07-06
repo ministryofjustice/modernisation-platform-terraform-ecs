@@ -1,6 +1,6 @@
 output "task_definition_arn" {
   description = "Displays task definition cluster arn"
-  value = module.ecs.current_task_definition.arn
+  value       = module.ecs.current_task_definition.arn
 }
 
 output "ecs_cluster_arn" {
