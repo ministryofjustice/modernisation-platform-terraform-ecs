@@ -1,5 +1,5 @@
 [{
-  "name": "test",
+  "name": "testing",
   "image": "mcr.microsoft.com/windows/servercore/iis",
   "cpu": 1536,
   "portMappings": [

@@ -9,7 +9,7 @@ data "http" "environments_file" {
 
 locals {
 
-  application_name = "performance-hub"
+  application_name = "testing"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
@@ -61,14 +61,6 @@ locals {
       protocol        = "tcp"
       cidr_blocks     = []
       security_groups = [aws_security_group.load_balancer_security_group.id]
-    },
-    "cluster_ec2_bastion_ingress" = {
-      description     = "Cluster EC2 bastion ingress rule"
-      from_port       = 3389
-      to_port         = 3389
-      protocol        = "tcp"
-      cidr_blocks     = []
-      security_groups = [module.bastion_linux.bastion_security_group]
     }
   }
 }

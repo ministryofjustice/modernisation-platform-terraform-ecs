@@ -6,10 +6,16 @@ import (
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
+	"github.com/gruntwork-io/terratest/modules/aws"
+	awsSDK "github.com/aws/aws-sdk-go/aws"
 )
 
-func TestS3Creation(t *testing.T) {
+func TestECSModule(t *testing.T) {
 	t.Parallel()
+
+	awsRegion := "eu-west-2"
+	expectedClusterName := regexp.MustCompile(`^*-ec2-launch-template`)
+	expectedServiceName := regexp.MustCompile(`^*-ecs-service`)
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "./unit-test",
@@ -19,9 +25,13 @@ func TestS3Creation(t *testing.T) {
 
 	terraform.InitAndApply(t, terraformOptions)
 
-	roleName := terraform.Output(t, terraformOptions, "role_name")
-	policyName := terraform.Output(t, terraformOptions, "policy_name")
+	roleName := terraform.Output(t, terraformOptions, "ecs_task_execution_role_id")
+	taskDefinitionArn := terraform.Output(t, terraformOptions, "task_definition_arn")
+	clusterArn := terraform.Output(t, terraformOptions, "ecs_cluster_arn")
+	service := aws.GetEcsService(t, awsRegion, expectedClusterName, expectedServiceName)
 
-	assert.Regexp(t, regexp.MustCompile(`^vmimport*`), roleName)
-	assert.Regexp(t, regexp.MustCompile(`^vmimport-policy*`), policyName)
+	assert.Regexp(t, regexp.MustCompile(`^arn:aws:ecs:::task-definition/*`), taskDefinitionArn)
+	assert.Regexp(t, regexp.MustCompile(`^arn:aws:ecs:::cluster/*`), clusterArn)
+	assert.Regexp(t, regexp.MustCompile(`^*-ecs-task-execution-role`), roleName)
+	assert.Equal(t, "EC2", awsSDK.StringValue(service.LaunchType))
 }

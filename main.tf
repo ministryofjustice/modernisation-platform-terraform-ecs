@@ -32,9 +32,10 @@ data "aws_lb_target_group" "target_group" {
   }
 }
 
-resource "aws_iam_service_linked_role" "ecs" {
-  aws_service_name = "ecs.amazonaws.com"
-}
+# resource "aws_iam_service_linked_role" "ecs" {
+#   aws_service_name = "ecs.amazonaws.com"
+#   custom_suffix    = var.app_name
+# }
 
 resource "aws_autoscaling_group" "cluster-scaling-group" {
   vpc_zone_identifier = sort(data.aws_subnets.shared-private.ids)

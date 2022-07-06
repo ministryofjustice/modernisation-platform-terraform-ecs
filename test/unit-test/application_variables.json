@@ -2,7 +2,7 @@
     "accounts": {
         "test": {
           "region": "eu-west-2",
-          "ami_image_id": "ami-035b1d60ffc27a71d",
+          "ami_image_id": "ami-0f1ed977261c5e8e7",
           "instance_type": "t3.medium",
           "app_count": "1",
           "key_name": "testing-test",
@@ -16,6 +16,7 @@
           "container_memory": "3072",
           "task_definition_volume": "upload_volume",
           "network_mode": "none",
-          "env_name": "development"        }
+          "env_name": "development"
+      }
     }
 }
