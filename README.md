@@ -106,7 +106,6 @@ No modules.
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 instance type to run in the ECS cluster | `string` | n/a | yes |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Key to access EC2s in ECS cluster | `string` | n/a | yes |
 | <a name="input_network_mode"></a> [network\_mode](#input\_network\_mode) | The network mode used for the containers in the task. If OS used is Windows network\_mode must equal none. | `string` | n/a | yes |
-| <a name="input_public_cidrs"></a> [public\_cidrs](#input\_public\_cidrs) | Public subnet CIDR blocks | `list(string)` | n/a | yes |
 | <a name="input_server_port"></a> [server\_port](#input\_server\_port) | The port the containers will be listening on | `string` | n/a | yes |
 | <a name="input_subnet_set_name"></a> [subnet\_set\_name](#input\_subnet\_set\_name) | The name of the subnet set associated with the account | `string` | n/a | yes |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | Common tags to be used by all resources | `map(string)` | n/a | yes |
