@@ -14,8 +14,8 @@ func TestECSModule(t *testing.T) {
 	t.Parallel()
 
 	awsRegion := "eu-west-2"
-	expectedClusterName := regexp.MustCompile(`^*-ec2-launch-template`)
-	expectedServiceName := regexp.MustCompile(`^*-ecs-service`)
+	expectedClusterName := "ec2-launch-template"
+	expectedServiceName := "ecs-service"
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "./unit-test",
