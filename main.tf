@@ -91,6 +91,7 @@ resource "aws_security_group" "cluster_ec2" {
     protocol    = "-1"
     #tfsec:ignore:aws-vpc-no-public-egress-sgr #tfsec:ignore:aws-vpc-add-description-to-security-group-rule
     cidr_blocks = ["0.0.0.0/0"]
+  }
 
   tags = merge(
     var.tags_common,
