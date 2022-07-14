@@ -104,7 +104,7 @@ resource "aws_security_group" "cluster_ec2" {
 # so that the autoscaling group creates new ones using the new launch template
 
 resource "aws_launch_template" "ec2-launch-template" {
-  name_prefix   = "ec2-launch-template"
+  name_prefix   = "${var.app_name}-ec2-launch-template"
   image_id      = var.ami_image_id
   instance_type = var.instance_type
   key_name      = var.key_name
@@ -295,7 +295,7 @@ resource "aws_ecs_task_definition" "linux_ecs_task_definition" {
 }
 
 resource "aws_ecs_service" "ecs_service" {
-  name            = "ecs-service"
+  name            = "${var.app_name}-ecs-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = data.aws_ecs_task_definition.task_definition.id
   desired_count   = var.app_count
