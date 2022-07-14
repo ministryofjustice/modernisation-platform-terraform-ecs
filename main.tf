@@ -32,9 +32,10 @@ data "aws_lb_target_group" "target_group" {
   }
 }
 
-resource "aws_iam_service_linked_role" "ecs" {
-  aws_service_name = "ecs.amazonaws.com"
-}
+# resource "aws_iam_service_linked_role" "ecs" {
+#   aws_service_name = "ecs.amazonaws.com"
+#   custom_suffix    = var.app_name
+# }
 
 resource "aws_autoscaling_group" "cluster-scaling-group" {
   vpc_zone_identifier = sort(data.aws_subnets.shared-private.ids)
@@ -68,6 +69,7 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
 # Controls access to the EC2 instances
 
 resource "aws_security_group" "cluster_ec2" {
+  #checkov:skip=CKV_AWS_23
   name        = "${var.app_name}-cluster-ec2-security-group"
   description = "controls access to the cluster ec2 instance"
   vpc_id      = data.aws_vpc.shared.id
@@ -83,11 +85,16 @@ resource "aws_security_group" "cluster_ec2" {
       security_groups = lookup(ingress.value, "security_groups", null)
     }
   }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "egress" {
+    for_each = var.ec2_egress_rules
+    content {
+      description     = lookup(egress.value, "description", null)
+      from_port       = lookup(egress.value, "from_port", null)
+      to_port         = lookup(egress.value, "to_port", null)
+      protocol        = lookup(egress.value, "protocol", null)
+      cidr_blocks     = lookup(egress.value, "cidr_blocks", null)
+      security_groups = lookup(egress.value, "security_groups", null)
+    }
   }
 
   tags = merge(
@@ -186,7 +193,7 @@ resource "aws_iam_role" "ec2_instance_role" {
 EOF
 }
 
-resource "aws_iam_policy" "ec2_instance_policy" {
+resource "aws_iam_policy" "ec2_instance_policy" {  #tfsec:ignore:aws-iam-no-policy-wildcards
   name = "${var.app_name}-ec2-instance-policy"
 
   policy = <<EOF
@@ -359,7 +366,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role" {
   }
 }
 
-resource "aws_iam_policy" "ecs_task_execution_s3_policy" {
+resource "aws_iam_policy" "ecs_task_execution_s3_policy" {  #tfsec:ignore:aws-iam-no-policy-wildcards
   name   = "${var.app_name}-ecs-task-execution-s3-policy"
   policy = <<EOF
 {

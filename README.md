@@ -78,7 +78,6 @@ No modules.
 | [aws_iam_role_policy_attachment.ecs_task_execution_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ecs_task_s3_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ecs_task_secrets_manager](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_service_linked_role.ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_service_linked_role) | resource |
 | [aws_launch_template.ec2-launch-template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
 | [aws_security_group.cluster_ec2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_ecs_task_definition.task_definition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ecs_task_definition) | data source |
@@ -99,6 +98,7 @@ No modules.
 | <a name="input_container_instance_type"></a> [container\_instance\_type](#input\_container\_instance\_type) | Container OS being used (windows or linux) | `string` | n/a | yes |
 | <a name="input_container_memory"></a> [container\_memory](#input\_container\_memory) | Container instance memory to provision (in MiB) | `string` | n/a | yes |
 | <a name="input_ec2_desired_capacity"></a> [ec2\_desired\_capacity](#input\_ec2\_desired\_capacity) | Number of EC2s in the cluster | `string` | n/a | yes |
+| <a name="input_ec2_egress_rules"></a> [ec2\_egress\_rules](#input\_ec2\_egress\_rules) | Security group egress rules for the cluster EC2s | <pre>map(object({<br>    description     = string<br>    from_port       = number<br>    to_port         = number<br>    protocol        = string<br>    security_groups = list(string)<br>    cidr_blocks     = list(string)<br>  }))</pre> | n/a | yes |
 | <a name="input_ec2_ingress_rules"></a> [ec2\_ingress\_rules](#input\_ec2\_ingress\_rules) | Security group ingress rules for the cluster EC2s | <pre>map(object({<br>    description     = string<br>    from_port       = number<br>    to_port         = number<br>    protocol        = string<br>    security_groups = list(string)<br>    cidr_blocks     = list(string)<br>  }))</pre> | n/a | yes |
 | <a name="input_ec2_max_size"></a> [ec2\_max\_size](#input\_ec2\_max\_size) | Max Number of EC2s in the cluster | `string` | n/a | yes |
 | <a name="input_ec2_min_size"></a> [ec2\_min\_size](#input\_ec2\_min\_size) | Min Number of EC2s in the cluster | `string` | n/a | yes |
@@ -106,7 +106,6 @@ No modules.
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 instance type to run in the ECS cluster | `string` | n/a | yes |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Key to access EC2s in ECS cluster | `string` | n/a | yes |
 | <a name="input_network_mode"></a> [network\_mode](#input\_network\_mode) | The network mode used for the containers in the task. If OS used is Windows network\_mode must equal none. | `string` | n/a | yes |
-| <a name="input_public_cidrs"></a> [public\_cidrs](#input\_public\_cidrs) | Public subnet CIDR blocks | `list(string)` | n/a | yes |
 | <a name="input_server_port"></a> [server\_port](#input\_server\_port) | The port the containers will be listening on | `string` | n/a | yes |
 | <a name="input_subnet_set_name"></a> [subnet\_set\_name](#input\_subnet\_set\_name) | The name of the subnet set associated with the account | `string` | n/a | yes |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | Common tags to be used by all resources | `map(string)` | n/a | yes |
@@ -121,6 +120,9 @@ No modules.
 |------|-------------|
 | <a name="output_cluster_ec2_security_group_id"></a> [cluster\_ec2\_security\_group\_id](#output\_cluster\_ec2\_security\_group\_id) | Security group id of EC2s used for ECS cluster |
 | <a name="output_current_task_definition"></a> [current\_task\_definition](#output\_current\_task\_definition) | Displays task definition information and version being used |
+| <a name="output_ecs_service"></a> [ecs\_service](#output\_ecs\_service) | Displays task definition information and version being used |
+| <a name="output_ecs_task_execution_policy"></a> [ecs\_task\_execution\_policy](#output\_ecs\_task\_execution\_policy) | Displays task definition policy details |
+| <a name="output_ecs_task_execution_role"></a> [ecs\_task\_execution\_role](#output\_ecs\_task\_execution\_role) | Displays task definition role details |
 
 <!--- END_TF_DOCS --->
 

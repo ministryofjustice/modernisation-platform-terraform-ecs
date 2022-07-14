@@ -28,7 +28,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         scan_type: single
-        tfsec_exclude: AWS089, AWS099, AWS009
+        tfsec_exclude: AWS089, AWS099, AWS009, AWS097, AWS018
+        checkov_exclude: CKV_GIT_1
 
   terraform-static-analysis-full-scan:
     name: Terraform Static Analysis - scan all directories
@@ -46,7 +47,7 @@ jobs:
       with:
         scan_type: full
         tfsec_exclude: AWS089, AWS099, AWS009
-        checkov_exclude: CKV_GIT_1
+        checkov_exclude: CKV_GIT_1, CKV_AWS_23, CKV_AWS_261, CKV_AWS_150
 
   terraform-static-analysis-scheduled-scan:
     name: Terraform Static Analysis - scheduled scan of all directories
@@ -63,7 +64,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         scan_type: full
-        tfsec_exclude: AWS089, AWS099, AWS009
+        tfsec_exclude: AWS089, AWS099, AWS009, AWS097, AWS018
+        checkov_exclude: CKV_GIT_1, CKV_AWS_23, CKV_AWS_261, CKV_AWS_150
     - uses: 8398a7/action-slack@v3
       name: Slack failure notification
       with:

@@ -71,11 +71,6 @@ variable "network_mode" {
   }
 }
 
-variable "public_cidrs" {
-  type        = list(string)
-  description = "Public subnet CIDR blocks"
-}
-
 variable "server_port" {
   type        = string
   description = "The port the containers will be listening on"
@@ -93,6 +88,18 @@ variable "tags_common" {
 
 variable "ec2_ingress_rules" {
   description = "Security group ingress rules for the cluster EC2s"
+  type = map(object({
+    description     = string
+    from_port       = number
+    to_port         = number
+    protocol        = string
+    security_groups = list(string)
+    cidr_blocks     = list(string)
+  }))
+}
+
+variable "ec2_egress_rules" {
+  description = "Security group egress rules for the cluster EC2s"
   type = map(object({
     description     = string
     from_port       = number
