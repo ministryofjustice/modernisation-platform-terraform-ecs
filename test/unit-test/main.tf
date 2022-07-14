@@ -192,6 +192,8 @@ resource "aws_lb" "external" {
   #checkov:skip=CKV_AWS_131
   #checkov:skip=CKV2_AWS_20
   #checkov:skip=CKV2_AWS_28
+  #checkov:skip=CKV2_AWS_150
+  #checkov:skip=CKV2_AWS_23
   name                       = "${local.application_name}-loadbalancer"
   load_balancer_type         = "application"
   subnets                    = data.aws_subnets.shared-public.ids
