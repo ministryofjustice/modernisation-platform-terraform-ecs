@@ -1,3 +1,32 @@
+module "ecs" {
+
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=61ed2af4ba963647931ed0359939787a0f0d74f7"
+
+  subnet_set_name         = local.subnet_set_name
+  vpc_all                 = local.vpc_all
+  app_name                = local.application_name
+  container_instance_type = local.app_data.accounts[local.environment].container_instance_type
+  environment             = local.environment
+  ami_image_id            = local.app_data.accounts[local.environment].ami_image_id
+  instance_type           = local.app_data.accounts[local.environment].instance_type
+  user_data               = base64encode(data.template_file.launch-template.rendered)
+  key_name                = local.app_data.accounts[local.environment].key_name
+  task_definition         = data.template_file.task_definition.rendered
+  ec2_desired_capacity    = local.app_data.accounts[local.environment].ec2_desired_capacity
+  ec2_max_size            = local.app_data.accounts[local.environment].ec2_max_size
+  ec2_min_size            = local.app_data.accounts[local.environment].ec2_min_size
+  container_cpu           = local.app_data.accounts[local.environment].container_cpu
+  container_memory        = local.app_data.accounts[local.environment].container_memory
+  task_definition_volume  = local.app_data.accounts[local.environment].task_definition_volume
+  network_mode            = local.app_data.accounts[local.environment].network_mode
+  server_port             = local.app_data.accounts[local.environment].server_port
+  app_count               = local.app_data.accounts[local.environment].app_count
+  ec2_ingress_rules       = local.ec2_ingress_rules
+  tags_common             = local.tags
+
+  depends_on = [aws_security_group.load_balancer_security_group, aws_lb_target_group.target_group]
+}
+
 data "aws_vpc" "shared" {
   tags = {
     "Name" = "${var.networking[0].business-unit}-${local.environment}"
@@ -166,7 +195,7 @@ resource "aws_lb" "external" {
   name                       = "${local.application_name}-loadbalancer"
   load_balancer_type         = "application"
   subnets                    = data.aws_subnets.shared-public.ids
-  enable_deletion_protection = true
+  enable_deletion_protection = false
   # allow 60*4 seconds before 504 gateway timeout for long-running DB operations
   idle_timeout = 240
 
@@ -194,31 +223,7 @@ resource "aws_lb_listener" "listener" {
   }
 }
 
-module "ecs" {
-
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=v2.0.0"
-
-  subnet_set_name         = local.subnet_set_name
-  vpc_all                 = local.vpc_all
-  app_name                = local.application_name
-  container_instance_type = local.app_data.accounts[local.environment].container_instance_type
-  environment             = local.environment
-  ami_image_id            = local.app_data.accounts[local.environment].ami_image_id
-  instance_type           = local.app_data.accounts[local.environment].instance_type
-  user_data               = base64encode(data.template_file.launch-template.rendered)
-  key_name                = local.app_data.accounts[local.environment].key_name
-  task_definition         = data.template_file.task_definition.rendered
-  ec2_desired_capacity    = local.app_data.accounts[local.environment].ec2_desired_capacity
-  ec2_max_size            = local.app_data.accounts[local.environment].ec2_max_size
-  ec2_min_size            = local.app_data.accounts[local.environment].ec2_min_size
-  container_cpu           = local.app_data.accounts[local.environment].container_cpu
-  container_memory        = local.app_data.accounts[local.environment].container_memory
-  task_definition_volume  = local.app_data.accounts[local.environment].task_definition_volume
-  network_mode            = local.app_data.accounts[local.environment].network_mode
-  server_port             = local.app_data.accounts[local.environment].server_port
-  app_count               = local.app_data.accounts[local.environment].app_count
-  ec2_ingress_rules       = local.ec2_ingress_rules
-  tags_common             = local.tags
-
-  depends_on = [aws_security_group.load_balancer_security_group, aws_lb_target_group.target_group]
+resource "aws_key_pair" "testing-test" {
+  key_name   = "testing-test"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCnSAEpvC64hz/xAuzE2ruHVFVCXoHTxSYQDW3hmDTPAO+lcHiMuxWZVyHlGl8sjdIr0uY9vvuIyXaiCmLRon4EppIua+N9WqXpg2W8zEvsWxeJJOLRqkp0kv3XttKAQ4a2u/nbiQO11ylEfsPMKjGrCPTkWvpC0XrGbEKGyCM4ep7oaiFn2CGXZxy7ZkBru39Fz5LCG8tWmlND4TNeUm1x0WkX2t+r5hSkHRedcGtF6dCayAfG/zZ6i8FmHX8HC2KYudAvUa4eLQkLvwfZufDiEtVaxUvpnPP1+tWn1OxqzYvIT69DLTXFWXRxtSclb3ybV2J3Khiki+TKP/LUK1/4ezGDIUWH0pyG5r0yWfDzvJKtHyJqJMQ+szQoVE38xxHTWxRf04KbYfJvlUzp0Bj4wrQ+NLDkjx2qYRjanzGHXLL/J1V5UwHrTFqOeA1R0Ek+nqs4+v9tUK1oOrnUAXC94Nr/VVgKma/KMnwPf2Ij+knaMVq4iIRHrckRulO6KS0= zuri@ZuriGuardiolasMacbookpro.local"
 }
