@@ -68,9 +68,8 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
 # EC2 Security Group
 # Controls access to the EC2 instances
 
-resource "aws_security_group" "cluster_ec2" {
+resource "aws_security_group" "cluster_ec2" {  #tfsec:aws-vpc-add-description-to-security-group-rule
   #checkov:skip=CKV2_AWS_23
-  #tfsec:ignore:aws-vpc-no-public-egress-sgr
   name        = "${var.app_name}-cluster-ec2-security-group"
   description = "controls access to the cluster ec2 instance"
   vpc_id      = data.aws_vpc.shared.id
@@ -90,7 +89,8 @@ resource "aws_security_group" "cluster_ec2" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]#tfsec:ignore:aws-vpc-no-public-egress-sgr
+
   }
 
   tags = merge(
@@ -189,7 +189,7 @@ resource "aws_iam_role" "ec2_instance_role" {
 EOF
 }
 
-resource "aws_iam_policy" "ec2_instance_policy" {
+resource "aws_iam_policy" "ec2_instance_policy" {  #tfsec:ignore:aws-iam-no-policy-wildcards
   name = "${var.app_name}-ec2-instance-policy"
 
   policy = <<EOF
@@ -362,7 +362,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role" {
   }
 }
 
-resource "aws_iam_policy" "ecs_task_execution_s3_policy" {
+resource "aws_iam_policy" "ecs_task_execution_s3_policy" {  #tfsec:ignore:aws-iam-no-policy-wildcards
   name   = "${var.app_name}-ecs-task-execution-s3-policy"
   policy = <<EOF
 {
