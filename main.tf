@@ -70,6 +70,7 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
 
 resource "aws_security_group" "cluster_ec2" {
   #checkov:skip=CKV2_AWS_23
+  #tfsec:ignore:aws-vpc-no-public-egress-sgr
   name        = "${var.app_name}-cluster-ec2-security-group"
   description = "controls access to the cluster ec2 instance"
   vpc_id      = data.aws_vpc.shared.id
