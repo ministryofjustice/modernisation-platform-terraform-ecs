@@ -98,6 +98,18 @@ variable "ec2_ingress_rules" {
   }))
 }
 
+variable "ec2_egress_rules" {
+  description = "Security group egress rules for the cluster EC2s"
+  type = map(object({
+    description     = string
+    from_port       = number
+    to_port         = number
+    protocol        = string
+    security_groups = list(string)
+    cidr_blocks     = list(string)
+  }))
+}
+
 variable "task_definition" {
   type        = string
   description = "Task definition to be used by the ECS service"

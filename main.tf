@@ -85,13 +85,16 @@ resource "aws_security_group" "cluster_ec2" {
       security_groups = lookup(ingress.value, "security_groups", null)
     }
   }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    #tfsec:ignore:aws-vpc-no-public-egress-sgr
-    #tfsec:ignore:aws-vpc-add-description-to-security-group-rule
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "egress" {
+    for_each = var.ec2_egress_rules
+    content {
+      description     = lookup(egress.value, "description", null)
+      from_port       = lookup(egress.value, "from_port", null)
+      to_port         = lookup(egress.value, "to_port", null)
+      protocol        = lookup(egress.value, "protocol", null)
+      cidr_blocks     = lookup(egress.value, "cidr_blocks", null)
+      security_groups = lookup(egress.value, "security_groups", null)
+    }
   }
 
   tags = merge(
