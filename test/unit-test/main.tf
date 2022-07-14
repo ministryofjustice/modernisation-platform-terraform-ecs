@@ -115,7 +115,7 @@ resource "aws_acm_certificate_validation" "external" {
 #tfsec:ignore:AWS005 tfsec:ignore:AWS083
 
 resource "aws_lb_target_group" "target_group" {
-  #checkov:skip=CKV2_AWS_261
+  #checkov:skip=CKV_AWS_261
   name                 = "${local.application_name}-tg-${local.environment}"
   port                 = local.app_data.accounts[local.environment].server_port
   protocol             = "HTTP"
@@ -188,12 +188,13 @@ resource "aws_security_group" "load_balancer_security_group" {
 }
 
 resource "aws_lb" "external" {
-  #tfsec:ignore:AWS005 tfsec:ignore:AWS083
+  #tfsec:ignore:AWS005
+  #tfsec:ignore:AWS083
   #checkov:skip=CKV_AWS_91
   #checkov:skip=CKV_AWS_131
   #checkov:skip=CKV2_AWS_20
   #checkov:skip=CKV2_AWS_28
-  #checkov:skip=CKV2_AWS_150
+  #checkov:skip=CKV_AWS_150
   name                       = "${local.application_name}-loadbalancer"
   load_balancer_type         = "application"
   subnets                    = data.aws_subnets.shared-public.ids

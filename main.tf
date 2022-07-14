@@ -68,8 +68,9 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
 # EC2 Security Group
 # Controls access to the EC2 instances
 
-resource "aws_security_group" "cluster_ec2" {  #tfsec:aws-vpc-add-description-to-security-group-rule
-  #checkov:skip=CKV2_AWS_23
+resource "aws_security_group" "cluster_ec2" {
+  #checkov:skip=CKV_AWS_23
+  #tfsec:aws-vpc-add-description-to-security-group-rule
   name        = "${var.app_name}-cluster-ec2-security-group"
   description = "controls access to the cluster ec2 instance"
   vpc_id      = data.aws_vpc.shared.id
