@@ -70,8 +70,8 @@ locals {
       from_port       = 0
       to_port         = 0
       protocol        = "tcp"
-      cidr_blocks     = []
-      security_groups = ["0.0.0.0/0"]
+      cidr_blocks     = ["0.0.0.0/0"]
+      security_groups = []
     }
   }
 }
