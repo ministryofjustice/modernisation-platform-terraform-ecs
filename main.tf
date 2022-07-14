@@ -70,8 +70,6 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
 
 resource "aws_security_group" "cluster_ec2" {
   #checkov:skip=CKV_AWS_23
-  #tfsec:ignore:aws-vpc-add-description-to-security-group-rule
-  #tfsec:ignore:aws-vpc-no-public-egress-sgr
   name        = "${var.app_name}-cluster-ec2-security-group"
   description = "controls access to the cluster ec2 instance"
   vpc_id      = data.aws_vpc.shared.id
@@ -91,9 +89,8 @@ resource "aws_security_group" "cluster_ec2" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
+    #tfsec:ignore:aws-vpc-no-public-egress-sgr #tfsec:ignore:aws-vpc-add-description-to-security-group-rule
     cidr_blocks = ["0.0.0.0/0"]
-
-  }
 
   tags = merge(
     var.tags_common,
