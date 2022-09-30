@@ -124,7 +124,6 @@ No modules.
 | <a name="output_ecs_service"></a> [ecs\_service](#output\_ecs\_service) | Displays task definition information and version being used |
 | <a name="output_ecs_task_execution_policy"></a> [ecs\_task\_execution\_policy](#output\_ecs\_task\_execution\_policy) | Displays task definition policy details |
 | <a name="output_ecs_task_execution_role"></a> [ecs\_task\_execution\_role](#output\_ecs\_task\_execution\_role) | Displays task definition role details |
-
 <!-- END_TF_DOCS -->
 
 ## Looking for issues?
