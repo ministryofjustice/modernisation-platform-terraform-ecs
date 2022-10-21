@@ -7,7 +7,7 @@ module "ecs" {
   app_name                = local.application_name
   container_instance_type = local.app_data.accounts[local.environment].container_instance_type
   environment             = local.environment
-  ami_image_id            = local.app_data.accounts[local.environment].ami_image_id
+  ami_image_id            = data.aws_ami.latest.image_id
   instance_type           = local.app_data.accounts[local.environment].instance_type
   user_data               = base64encode(data.template_file.launch-template.rendered)
   key_name                = local.app_data.accounts[local.environment].key_name
@@ -29,6 +29,15 @@ module "ecs" {
   depends_on = [aws_security_group.load_balancer_security_group, aws_lb_target_group.target_group]
 }
 
+data "aws_ami" "latest" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["Windows_Server-2022-English-Core-ECS_Optimized-*"]
+  }
+}
 data "aws_vpc" "shared" {
   tags = {
     "Name" = "${var.networking[0].business-unit}-${local.environment}"
