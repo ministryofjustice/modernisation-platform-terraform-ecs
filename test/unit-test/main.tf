@@ -15,6 +15,7 @@ module "ecs" {
   ec2_desired_capacity    = local.app_data.accounts[local.environment].ec2_desired_capacity
   ec2_max_size            = local.app_data.accounts[local.environment].ec2_max_size
   ec2_min_size            = local.app_data.accounts[local.environment].ec2_min_size
+  appscaling_min_capacity = local.app_data.accounts[local.environment].appscaling_min_capacity
   container_cpu           = local.app_data.accounts[local.environment].container_cpu
   container_memory        = local.app_data.accounts[local.environment].container_memory
   task_definition_volume  = local.app_data.accounts[local.environment].task_definition_volume
@@ -22,7 +23,7 @@ module "ecs" {
   server_port             = local.app_data.accounts[local.environment].server_port
   app_count               = local.app_data.accounts[local.environment].app_count
   ec2_ingress_rules       = local.ec2_ingress_rules
-  ec2_egress_rules       = local.ec2_egress_rules
+  ec2_egress_rules        = local.ec2_egress_rules
   tags_common             = local.tags
 
   depends_on = [aws_security_group.load_balancer_security_group, aws_lb_target_group.target_group]

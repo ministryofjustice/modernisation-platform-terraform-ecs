@@ -120,6 +120,18 @@ variable "task_definition_volume" {
   description = "Name of the volume referenced in the sourceVolume parameter of container definition in the mountPoints section"
 }
 
+variable "appscaling_min_capacity" {
+  type        = number
+  description = "Minimum capacity of the application scaling target"
+  default     = 1
+}
+
+variable "appscaling_max_capacity" {
+  type        = number
+  description = "Maximum capacity of the application scaling target"
+  default     = 3
+}
+
 variable "user_data" {
   type        = string
   description = "The configuration used when creating EC2s used for the ECS cluster"

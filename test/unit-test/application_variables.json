@@ -9,6 +9,7 @@
           "ec2_desired_capacity": 2,
           "ec2_max_size": 3,
           "ec2_min_size": 2,
+          "appscaling_min_capacity": 1,
           "server_port": "80",
           "container_instance_type": "windows",
           "container_version": "test",
