@@ -94,6 +94,8 @@ No modules.
 | <a name="input_ami_image_id"></a> [ami\_image\_id](#input\_ami\_image\_id) | EC2 AMI image to run in the ECS cluster | `string` | n/a | yes |
 | <a name="input_app_count"></a> [app\_count](#input\_app\_count) | Number of docker containers to run | `string` | n/a | yes |
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of the application | `string` | n/a | yes |
+| <a name="input_appscaling_max_capacity"></a> [appscaling\_max\_capacity](#input\_appscaling\_max\_capacity) | Maximum capacity of the application scaling target | `number` | `3` | no |
+| <a name="input_appscaling_min_capacity"></a> [appscaling\_min\_capacity](#input\_appscaling\_min\_capacity) | Minimum capacity of the application scaling target | `number` | `1` | no |
 | <a name="input_container_cpu"></a> [container\_cpu](#input\_container\_cpu) | Container instance CPU units to provision (1 vCPU = 1024 CPU units) | `string` | n/a | yes |
 | <a name="input_container_instance_type"></a> [container\_instance\_type](#input\_container\_instance\_type) | Container OS being used (windows or linux) | `string` | n/a | yes |
 | <a name="input_container_memory"></a> [container\_memory](#input\_container\_memory) | Container instance memory to provision (in MiB) | `string` | n/a | yes |

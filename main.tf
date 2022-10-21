@@ -181,7 +181,7 @@ resource "aws_iam_role" "ec2_instance_role" {
 EOF
 }
 
-resource "aws_iam_policy" "ec2_instance_policy" {  #tfsec:ignore:aws-iam-no-policy-wildcards
+resource "aws_iam_policy" "ec2_instance_policy" { #tfsec:ignore:aws-iam-no-policy-wildcards
   name = "${var.app_name}-ec2-instance-policy"
 
   policy = <<EOF
@@ -354,7 +354,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role" {
   }
 }
 
-resource "aws_iam_policy" "ecs_task_execution_s3_policy" {  #tfsec:ignore:aws-iam-no-policy-wildcards
+resource "aws_iam_policy" "ecs_task_execution_s3_policy" { #tfsec:ignore:aws-iam-no-policy-wildcards
   name   = "${var.app_name}-ecs-task-execution-s3-policy"
   policy = <<EOF
 {
@@ -412,8 +412,8 @@ resource "aws_appautoscaling_target" "scaling_target" {
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
   scalable_dimension = "ecs:service:DesiredCount"
-  min_capacity       = 1
-  max_capacity       = 3
+  min_capacity       = var.appscaling_min_capacity
+  max_capacity       = var.appscaling_max_capacity
 }
 
 # Automatically scale capacity up by one

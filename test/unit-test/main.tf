@@ -1,13 +1,13 @@
 module "ecs" {
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=f5afe1035d867eb650ac3c55afdf4b4fcdee6117"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=e57c01f26ddc488fe6c83bfdc2817510f44f3b19"
 
   subnet_set_name         = local.subnet_set_name
   vpc_all                 = local.vpc_all
   app_name                = local.application_name
   container_instance_type = local.app_data.accounts[local.environment].container_instance_type
   environment             = local.environment
-  ami_image_id            = local.app_data.accounts[local.environment].ami_image_id
+  ami_image_id            = data.aws_ami.latest.image_id
   instance_type           = local.app_data.accounts[local.environment].instance_type
   user_data               = base64encode(data.template_file.launch-template.rendered)
   key_name                = local.app_data.accounts[local.environment].key_name
@@ -15,6 +15,7 @@ module "ecs" {
   ec2_desired_capacity    = local.app_data.accounts[local.environment].ec2_desired_capacity
   ec2_max_size            = local.app_data.accounts[local.environment].ec2_max_size
   ec2_min_size            = local.app_data.accounts[local.environment].ec2_min_size
+  appscaling_min_capacity = local.app_data.accounts[local.environment].appscaling_min_capacity
   container_cpu           = local.app_data.accounts[local.environment].container_cpu
   container_memory        = local.app_data.accounts[local.environment].container_memory
   task_definition_volume  = local.app_data.accounts[local.environment].task_definition_volume
@@ -22,12 +23,21 @@ module "ecs" {
   server_port             = local.app_data.accounts[local.environment].server_port
   app_count               = local.app_data.accounts[local.environment].app_count
   ec2_ingress_rules       = local.ec2_ingress_rules
-  ec2_egress_rules       = local.ec2_egress_rules
+  ec2_egress_rules        = local.ec2_egress_rules
   tags_common             = local.tags
 
   depends_on = [aws_security_group.load_balancer_security_group, aws_lb_target_group.target_group]
 }
 
+data "aws_ami" "latest" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["Windows_Server-2022-English-Core-ECS_Optimized-*"]
+  }
+}
 data "aws_vpc" "shared" {
   tags = {
     "Name" = "${var.networking[0].business-unit}-${local.environment}"
