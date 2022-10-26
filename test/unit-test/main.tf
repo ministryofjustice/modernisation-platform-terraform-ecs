@@ -241,3 +241,4 @@ resource "aws_key_pair" "testing-test" {
   key_name   = "testing-test"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCnSAEpvC64hz/xAuzE2ruHVFVCXoHTxSYQDW3hmDTPAO+lcHiMuxWZVyHlGl8sjdIr0uY9vvuIyXaiCmLRon4EppIua+N9WqXpg2W8zEvsWxeJJOLRqkp0kv3XttKAQ4a2u/nbiQO11ylEfsPMKjGrCPTkWvpC0XrGbEKGyCM4ep7oaiFn2CGXZxy7ZkBru39Fz5LCG8tWmlND4TNeUm1x0WkX2t+r5hSkHRedcGtF6dCayAfG/zZ6i8FmHX8HC2KYudAvUa4eLQkLvwfZufDiEtVaxUvpnPP1+tWn1OxqzYvIT69DLTXFWXRxtSclb3ybV2J3Khiki+TKP/LUK1/4ezGDIUWH0pyG5r0yWfDzvJKtHyJqJMQ+szQoVE38xxHTWxRf04KbYfJvlUzp0Bj4wrQ+NLDkjx2qYRjanzGHXLL/J1V5UwHrTFqOeA1R0Ek+nqs4+v9tUK1oOrnUAXC94Nr/VVgKma/KMnwPf2Ij+knaMVq4iIRHrckRulO6KS0= zuri@ZuriGuardiolasMacbookpro.local"
 }
+
