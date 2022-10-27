@@ -480,10 +480,6 @@ resource "aws_cloudwatch_log_stream" "cloudwatch_stream" {
   log_group_name = aws_cloudwatch_log_group.cloudwatch_group.name
 }
 
-data "aws_ec2_task_definition" "task_definition" {
-  task_definition = "${var.app_name}-task-definition"
-}
-
 ##### EC2 autoscaling ##########
 
 resource "aws_placement_group" "ec2_instances" {
