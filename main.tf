@@ -479,3 +479,122 @@ resource "aws_cloudwatch_log_stream" "cloudwatch_stream" {
   name           = "${var.app_name}-log-stream"
   log_group_name = aws_cloudwatch_log_group.cloudwatch_group.name
 }
+
+##### EC2 autoscaling ##########
+
+resource "aws_placement_group" "ec2_instances" {
+  name     = ""
+  strategy = "cluster"
+}
+
+data "aws_ami" "latest" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["Windows_Server-2022-English-Core-ECS_Optimized-*"]
+  }
+}
+
+resource "aws_launch_configuration" "as_conf" {
+  name_prefix   = "${var.app_name}-ec2-launch-conf"
+  image_id      = data.aws_ami.latest.id
+  instance_type = var.instance_type
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_autoscaling_group" "ec2-scaling-group" {
+  name                      = "${var.app_name}-ec2-auto-scaling"
+  placement_group           = aws_placement_group.ec2_instances.id
+  launch_configuration      = aws_launch_configuration.as_conf.name
+  vpc_zone_identifier       = sort(data.aws_subnets.shared-private.ids)
+  desired_capacity          = var.ec2_desired_capacity
+  max_size                  = var.ec2_max_size
+  min_size                  = var.ec2_min_size
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  launch_template {
+    id      = aws_launch_template.ec2-launch-template.id
+    version = "$Latest"
+  }
+
+  tag {
+    key                 = "Name"
+    value               = "${var.app_name}-ec2-scaling-group"
+    propagate_at_launch = true
+  }
+
+  dynamic "tag" {
+    for_each = var.tags_common
+
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
+  }
+
+}
+
+###### EC2 autoscaling ##########
+#
+#resource "aws_appautoscaling_target" "scaling_target" {
+#  service_namespace  = "ec2"
+#  resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
+#  scalable_dimension = "ecs:service:DesiredCount"
+#  min_capacity       = var.appscaling_min_capacity
+#  max_capacity       = var.appscaling_max_capacity
+#}
+#
+## Automatically scale capacity up by one
+#resource "aws_appautoscaling_policy" "scaling_policy_up" {
+#  name               = "${var.app_name}-scale-up-policy"
+#  service_namespace  = "ecs"
+#  resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
+#  scalable_dimension = "ecs:service:DesiredCount"
+#
+#  step_scaling_policy_configuration {
+#    adjustment_type         = "ChangeInCapacity"
+#    cooldown                = 60
+#    metric_aggregation_type = "Maximum"
+#
+#    step_adjustment {
+#      metric_interval_lower_bound = 0
+#      scaling_adjustment          = 1
+#    }
+#  }
+#
+#  depends_on = [
+#    aws_appautoscaling_target.scaling_target,
+#  ]
+#}
+#
+## Automatically scale capacity down by one
+#resource "aws_appautoscaling_policy" "scaling_policy_down" {
+#  name               = "${var.app_name}-scale-down-policy"
+#  service_namespace  = "ecs"
+#  resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
+#  scalable_dimension = "ecs:service:DesiredCount"
+#
+#  step_scaling_policy_configuration {
+#    adjustment_type         = "ChangeInCapacity"
+#    cooldown                = 60
+#    metric_aggregation_type = "Maximum"
+#
+#    step_adjustment {
+#      metric_interval_lower_bound = 0
+#      scaling_adjustment          = -1
+#    }
+#  }
+#
+#  depends_on = [
+#    aws_appautoscaling_target.scaling_target,
+#  ]
+#}
