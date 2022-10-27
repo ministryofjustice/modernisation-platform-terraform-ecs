@@ -22,3 +22,8 @@ output "ecs_task_execution_policy" {
   description = "Displays task definition policy details"
   value       = data.aws_iam_policy_document.ecs_task_execution_role
 }
+
+output "ec2_current_task_definition" {
+  description = "Displays task definition policy details"
+  value       = data.aws_ec2_task_definition.task_definition
+}

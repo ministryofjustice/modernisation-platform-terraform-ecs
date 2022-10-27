@@ -1,6 +1,6 @@
 module "ecs" {
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=6a493bee46883e7b45fad89e7c0597af278c34f0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=39c4926429ee7bb23e8073cd11a5ae0b766dcaa0"
 
   subnet_set_name         = local.subnet_set_name
   vpc_all                 = local.vpc_all

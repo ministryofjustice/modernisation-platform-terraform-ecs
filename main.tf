@@ -480,6 +480,10 @@ resource "aws_cloudwatch_log_stream" "cloudwatch_stream" {
   log_group_name = aws_cloudwatch_log_group.cloudwatch_group.name
 }
 
+data "aws_ec2_task_definition" "task_definition" {
+  task_definition = "${var.app_name}-task-definition"
+}
+
 ##### EC2 autoscaling ##########
 
 resource "aws_placement_group" "ec2_instances" {
@@ -542,59 +546,3 @@ resource "aws_autoscaling_group" "ec2-scaling-group" {
   }
 
 }
-
-###### EC2 autoscaling ##########
-#
-#resource "aws_appautoscaling_target" "scaling_target" {
-#  service_namespace  = "ec2"
-#  resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
-#  scalable_dimension = "ecs:service:DesiredCount"
-#  min_capacity       = var.appscaling_min_capacity
-#  max_capacity       = var.appscaling_max_capacity
-#}
-#
-## Automatically scale capacity up by one
-#resource "aws_appautoscaling_policy" "scaling_policy_up" {
-#  name               = "${var.app_name}-scale-up-policy"
-#  service_namespace  = "ecs"
-#  resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
-#  scalable_dimension = "ecs:service:DesiredCount"
-#
-#  step_scaling_policy_configuration {
-#    adjustment_type         = "ChangeInCapacity"
-#    cooldown                = 60
-#    metric_aggregation_type = "Maximum"
-#
-#    step_adjustment {
-#      metric_interval_lower_bound = 0
-#      scaling_adjustment          = 1
-#    }
-#  }
-#
-#  depends_on = [
-#    aws_appautoscaling_target.scaling_target,
-#  ]
-#}
-#
-## Automatically scale capacity down by one
-#resource "aws_appautoscaling_policy" "scaling_policy_down" {
-#  name               = "${var.app_name}-scale-down-policy"
-#  service_namespace  = "ecs"
-#  resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
-#  scalable_dimension = "ecs:service:DesiredCount"
-#
-#  step_scaling_policy_configuration {
-#    adjustment_type         = "ChangeInCapacity"
-#    cooldown                = 60
-#    metric_aggregation_type = "Maximum"
-#
-#    step_adjustment {
-#      metric_interval_lower_bound = 0
-#      scaling_adjustment          = -1
-#    }
-#  }
-#
-#  depends_on = [
-#    aws_appautoscaling_target.scaling_target,
-#  ]
-#}
