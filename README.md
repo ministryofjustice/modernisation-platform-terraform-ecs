@@ -120,6 +120,9 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_app_autoscale_name"></a> [app\_autoscale\_name](#output\_app\_autoscale\_name) | Autoscale Name |
+| <a name="output_app_scale_down_policy"></a> [app\_scale\_down\_policy](#output\_app\_scale\_down\_policy) | App scale down policy output |
+| <a name="output_app_scale_up_policy"></a> [app\_scale\_up\_policy](#output\_app\_scale\_up\_policy) | App scale up policy output |
 | <a name="output_cluster_ec2_security_group_id"></a> [cluster\_ec2\_security\_group\_id](#output\_cluster\_ec2\_security\_group\_id) | Security group id of EC2s used for ECS cluster |
 | <a name="output_current_task_definition"></a> [current\_task\_definition](#output\_current\_task\_definition) | Displays task definition information and version being used |
 | <a name="output_ecs_service"></a> [ecs\_service](#output\_ecs\_service) | Displays task definition information and version being used |
