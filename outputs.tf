@@ -22,3 +22,18 @@ output "ecs_task_execution_policy" {
   description = "Displays task definition policy details"
   value       = data.aws_iam_policy_document.ecs_task_execution_role
 }
+
+output "app_scale_up_policy"{
+  description = "App scale up policy output"
+  value = aws_appautoscaling_policy.scaling_policy_up.arn
+}
+
+output "app_scale_down_policy"{
+  description = "App scale down policy output"
+  value = aws_appautoscaling_policy.scaling_policy_down.arn
+}
+
+output "app_autoscale_name"{
+  description = "Autoscale Name"
+  value = aws_autoscaling_group.cluster-scaling-group.arn
+}
