@@ -120,8 +120,11 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_app_scale_down_policy_arn"></a> [app\_scale\_down\_policy\_arn](#output\_app\_scale\_down\_policy\_arn) | ARN for app autoscaling - scaling policy down |
+| <a name="output_app_scale_up_policy_arn"></a> [app\_scale\_up\_policy\_arn](#output\_app\_scale\_up\_policy\_arn) | ARN for app autoscaling - scaling policy up |
 | <a name="output_cluster_ec2_security_group_id"></a> [cluster\_ec2\_security\_group\_id](#output\_cluster\_ec2\_security\_group\_id) | Security group id of EC2s used for ECS cluster |
 | <a name="output_current_task_definition"></a> [current\_task\_definition](#output\_current\_task\_definition) | Displays task definition information and version being used |
+| <a name="output_ec2_autoscaling_group"></a> [ec2\_autoscaling\_group](#output\_ec2\_autoscaling\_group) | Autoscaling group information |
 | <a name="output_ecs_service"></a> [ecs\_service](#output\_ecs\_service) | Displays task definition information and version being used |
 | <a name="output_ecs_task_execution_policy"></a> [ecs\_task\_execution\_policy](#output\_ecs\_task\_execution\_policy) | Displays task definition policy details |
 | <a name="output_ecs_task_execution_role"></a> [ecs\_task\_execution\_role](#output\_ecs\_task\_execution\_role) | Displays task definition role details |
