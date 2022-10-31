@@ -33,7 +33,7 @@ output "app_scale_down_policy_arn" {
   value       = aws_appautoscaling_policy.scaling_policy_down.arn
 }
 
-output "ec2_autoscaling_name" {
+output "ec2_autoscaling_group" {
   description = "Autoscaling group name"
   value       = aws_autoscaling_group.cluster-scaling-group
 }
