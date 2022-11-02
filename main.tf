@@ -27,7 +27,7 @@ data "aws_lb_target_group" "target_group" {
 
 resource "aws_autoscaling_group" "cluster-scaling-group" {
   vpc_zone_identifier = sort(data.aws_subnets.shared-private.ids)
-  desired_capacity    = var.ec2_desired_capacity
+  desired_capacity    = length(var.custom_scaling_policy_enabled) == 1 ? null : var.ec2_desired_capacity
   max_size            = var.ec2_max_size
   min_size            = var.ec2_min_size
 
@@ -52,6 +52,49 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
     }
   }
 }
+
+resource "aws_autoscaling_policy" "cluster-scaling-policy" {
+  count                  = length(var.custom_scaling_policy_enabled) == 1 ? 1 : 0
+  autoscaling_group_name = aws_autoscaling_group.cluster-scaling-group.name
+  name                   = format("%s-scaling-policy", aws_autoscaling_group.cluster-scaling-group.name)
+  policy_type            = "TargetTrackingScaling"
+
+  dynamic "target_tracking_configuration" {
+    for_each = try([var.target_tracking_configuration], [])
+    content {
+      target_value     = target_tracking_configuration.value.target_value
+      disable_scale_in = try(target_tracking_configuration.value.disable_scale_in, null)
+
+      dynamic "predefined_metric_specification" {
+        for_each = try([target_tracking_configuration.value.predefined_metric_specification], [])
+        content {
+          predefined_metric_type = predefined_metric_specification.value.predefined_metric_type
+          resource_label         = try(predefined_metric_specification.value.resource_label, null)
+        }
+      }
+
+      dynamic "customized_metric_specification" {
+        for_each = try([target_tracking_configuration.value.customized_metric_specification], [])
+        content {
+
+          dynamic "metric_dimension" {
+            for_each = try([customized_metric_specification.value.metric_dimension], [])
+            content {
+              name  = try(metric_dimension.value.name, null)
+              value = try(metric_dimension.value.value, null)
+            }
+          }
+
+          metric_name = customized_metric_specification.value.metric_name
+          namespace   = customized_metric_specification.value.namespace
+          statistic   = customized_metric_specification.value.statistic
+          unit        = try(customized_metric_specification.value.unit, null)
+        }
+      }
+    }
+  }
+}
+
 
 # EC2 Security Group
 # Controls access to the EC2 instances

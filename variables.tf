@@ -32,6 +32,12 @@ variable "container_memory" {
   description = "Container instance memory to provision (in MiB)"
 }
 
+variable "custom_scaling_policy_enabled" {
+  type        = bool
+  default     = false
+  description = "Boolean value confirming that a custom scaling policy is enabled. Set as false by default."
+}
+
 variable "ec2_desired_capacity" {
   type        = string
   description = "Number of EC2s in the cluster"
@@ -108,6 +114,20 @@ variable "ec2_egress_rules" {
     security_groups = list(string)
     cidr_blocks     = list(string)
   }))
+}
+
+variable "target_tracking_configuration" {
+  type        = map(any)
+  description = "Map of values used to populate target tracking configuration blocks"
+/*
+target_tracking_configuration = {
+  predefined_metric_specification = {
+    predefined_metric_type = "ASGAverageCPUUtilization"
+    resource_label         = "MyLabel"
+  }
+  target_value = 50.0
+}
+*/
 }
 
 variable "task_definition" {
