@@ -117,7 +117,6 @@ variable "ec2_egress_rules" {
 }
 
 variable "target_tracking_configuration" {
-  type        = map(any)
   description = "Map of values used to populate target tracking configuration blocks"
 /*
 target_tracking_configuration = {

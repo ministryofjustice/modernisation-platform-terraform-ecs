@@ -27,7 +27,7 @@ data "aws_lb_target_group" "target_group" {
 
 resource "aws_autoscaling_group" "cluster-scaling-group" {
   vpc_zone_identifier = sort(data.aws_subnets.shared-private.ids)
-  desired_capacity    = length(var.custom_scaling_policy_enabled) == 1 ? null : var.ec2_desired_capacity
+  desired_capacity    = var.custom_scaling_policy_enabled == 1 ? null : var.ec2_desired_capacity
   max_size            = var.ec2_max_size
   min_size            = var.ec2_min_size
 
@@ -54,7 +54,7 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
 }
 
 resource "aws_autoscaling_policy" "cluster-scaling-policy" {
-  count                  = length(var.custom_scaling_policy_enabled) == 1 ? 1 : 0
+  count                  = var.custom_scaling_policy_enabled == 1 ? 1 : 0
   autoscaling_group_name = aws_autoscaling_group.cluster-scaling-group.name
   name                   = format("%s-scaling-policy", aws_autoscaling_group.cluster-scaling-group.name)
   policy_type            = "TargetTrackingScaling"
