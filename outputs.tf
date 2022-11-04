@@ -37,3 +37,9 @@ output "ec2_autoscaling_group" {
   description = "Autoscaling group information"
   value       = aws_autoscaling_group.cluster-scaling-group
 }
+
+output "cluster_scaling_policy" {
+  description = "Displays details from autoscaling policy"
+  depends_on = [aws_autoscaling_policy.cluster-scaling-policy]
+  value = aws_autoscaling_policy.cluster-scaling-policy
+}
