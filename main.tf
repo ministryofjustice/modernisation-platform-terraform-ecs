@@ -20,9 +20,7 @@ data "aws_subnets" "shared-private" {
 }
 
 data "aws_lb_target_group" "target_group" {
-  tags = {
-    "Name" = "${var.app_name}-tg-${var.environment}"
-  }
+  name = var.lb_tg_name
 }
 
 resource "aws_autoscaling_group" "cluster-scaling-group" {
@@ -51,6 +49,8 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
       propagate_at_launch = true
     }
   }
+
+  depends_on = [aws_launch_template.ec2-launch-template]
 }
 
 resource "aws_autoscaling_policy" "cluster-scaling-policy" {
@@ -346,7 +346,7 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   load_balancer {
-    target_group_arn = data.aws_lb_target_group.target_group.id
+    target_group_arn = data.aws_lb_target_group.target_group.arn
     container_name   = var.app_name
     container_port   = var.server_port
   }
