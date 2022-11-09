@@ -47,11 +47,6 @@ variable "ec2_min_size" {
   description = "Min Number of EC2s in the cluster"
 }
 
-variable "environment" {
-  type        = string
-  description = "The environment where resources are to be created (development, test, preprod, production)"
-}
-
 variable "instance_type" {
   type        = string
   description = "EC2 instance type to run in the ECS cluster"
