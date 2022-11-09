@@ -62,6 +62,11 @@ variable "key_name" {
   description = "Key to access EC2s in ECS cluster"
 }
 
+variable "lb_tg_name" {
+  type        = string
+  description = "Load balancer target group name used by ECS service"
+}
+
 variable "network_mode" {
   type        = string
   description = "The network mode used for the containers in the task. If OS used is Windows network_mode must equal none."

@@ -20,9 +20,7 @@ data "aws_subnets" "shared-private" {
 }
 
 data "aws_lb_target_group" "target_group" {
-  tags = {
-    "Name" = "${var.app_name}-tg-${var.environment}"
-  }
+  name = var.lb_tg_name
 }
 
 resource "aws_autoscaling_group" "cluster-scaling-group" {
