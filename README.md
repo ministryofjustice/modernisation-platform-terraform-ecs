@@ -104,9 +104,9 @@ No modules.
 | <a name="input_ec2_ingress_rules"></a> [ec2\_ingress\_rules](#input\_ec2\_ingress\_rules) | Security group ingress rules for the cluster EC2s | <pre>map(object({<br>    description     = string<br>    from_port       = number<br>    to_port         = number<br>    protocol        = string<br>    security_groups = list(string)<br>    cidr_blocks     = list(string)<br>  }))</pre> | n/a | yes |
 | <a name="input_ec2_max_size"></a> [ec2\_max\_size](#input\_ec2\_max\_size) | Max Number of EC2s in the cluster | `string` | n/a | yes |
 | <a name="input_ec2_min_size"></a> [ec2\_min\_size](#input\_ec2\_min\_size) | Min Number of EC2s in the cluster | `string` | n/a | yes |
-| <a name="input_environment"></a> [environment](#input\_environment) | The environment where resources are to be created (development, test, preprod, production) | `string` | n/a | yes |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 instance type to run in the ECS cluster | `string` | n/a | yes |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Key to access EC2s in ECS cluster | `string` | n/a | yes |
+| <a name="input_lb_tg_name"></a> [lb\_tg\_name](#input\_lb\_tg\_name) | Load balancer target group name used by ECS service | `string` | n/a | yes |
 | <a name="input_network_mode"></a> [network\_mode](#input\_network\_mode) | The network mode used for the containers in the task. If OS used is Windows network\_mode must equal none. | `string` | n/a | yes |
 | <a name="input_server_port"></a> [server\_port](#input\_server\_port) | The port the containers will be listening on | `string` | n/a | yes |
 | <a name="input_subnet_set_name"></a> [subnet\_set\_name](#input\_subnet\_set\_name) | The name of the subnet set associated with the account | `string` | n/a | yes |
