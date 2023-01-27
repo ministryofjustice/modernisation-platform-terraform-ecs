@@ -503,7 +503,7 @@ resource "aws_autoscaling_group" "ecs_non_prod_daily" {
     version = "$Latest"
   }
   availability_zones        = "eu-west-2"
-  name                      = "bastion_linux_daily"
+  name                      = "ecs_non_prod_daily"
   max_size                  = 1
   min_size                  = 1
   health_check_grace_period = 300
