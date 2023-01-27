@@ -477,3 +477,53 @@ resource "aws_cloudwatch_log_stream" "cloudwatch_stream" {
   name           = "${var.app_name}-log-stream"
   log_group_name = aws_cloudwatch_log_group.cloudwatch_group.name
 }
+
+
+resource "aws_autoscaling_schedule" "ecs_non_prod_scale_down" {
+  scheduled_action_name  = "ecs_non_prod_scale_down"
+  min_size               = 0
+  max_size               = 0
+  desired_capacity       = 0
+  recurrence             = "0 20 * * *" # 20.00 UTC time or 21.00 London time
+  autoscaling_group_name = aws_autoscaling_group.ecs_non_prod_daily.name
+}
+
+resource "aws_autoscaling_schedule" "ecs_non_prod_scale_up" {
+  scheduled_action_name  = "ecs_non_prod_scale_up"
+  min_size               = 1
+  max_size               = 1
+  desired_capacity       = 1
+  recurrence             = "0 5 * * *" # 5.00 UTC time or 6.00 London time
+  autoscaling_group_name = aws_autoscaling_group.ecs_non_prod_daily.name
+}
+
+resource "aws_autoscaling_group" "ecs_non_prod_daily" {
+  launch_template {
+    id      = aws_launch_template.ec2-launch-template.id
+    version = "$Latest"
+  }
+  availability_zones        = "eu-west-2"
+  name                      = "bastion_linux_daily"
+  max_size                  = 1
+  min_size                  = 1
+  health_check_grace_period = 300
+  health_check_type         = "ELB"
+  force_delete              = true
+  termination_policies      = ["OldestInstance"]
+
+  tag {
+    key                 = "Name"
+    value               = "ecs_non_prod"
+    propagate_at_launch = true
+  }
+
+  dynamic "tag" {
+    for_each = var.tags_common
+
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
+  }
+}
