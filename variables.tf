@@ -118,7 +118,7 @@ variable "ec2_egress_rules" {
 
 variable "target_tracking_configuration" {
   description = "Map of values used to populate target tracking configuration blocks"
-/*
+  /*
 target_tracking_configuration = {
   predefined_metric_specification = {
     predefined_metric_type = "ASGAverageCPUUtilization"
