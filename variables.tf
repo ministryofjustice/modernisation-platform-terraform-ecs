@@ -141,3 +141,10 @@ variable "vpc_all" {
   type        = string
   description = "The full name of the VPC (including environment) used to create resources"
 }
+
+locals {
+  is-production    = substr(terraform.workspace, length(var.app_name), length(terraform.workspace)) == "-production"
+  is-preproduction = substr(terraform.workspace, length(var.app_name), length(terraform.workspace)) == "-preproduction"
+  is-test          = substr(terraform.workspace, length(var.app_name), length(terraform.workspace)) == "-test"
+  is-development   = substr(terraform.workspace, length(var.app_name), length(terraform.workspace)) == "-development"
+}
