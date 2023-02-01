@@ -486,7 +486,7 @@ resource "aws_cloudwatch_log_stream" "cloudwatch_stream" {
 #}
 
 resource "aws_autoscaling_schedule" "ecs_non_prod_scale_down" {
-  count                   = local.is-production == true ? 1 : 0
+  count                  = local.is-production == true ? 1 : 0
   scheduled_action_name  = "ecs_non_prod_scale_down"
   min_size               = 0
   max_size               = 0
