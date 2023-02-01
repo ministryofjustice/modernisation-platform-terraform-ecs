@@ -144,7 +144,4 @@ variable "vpc_all" {
 
 locals {
   is-production    = substr(terraform.workspace, length(var.app_name), length(terraform.workspace)) == "-production"
-  is-preproduction = substr(terraform.workspace, length(var.app_name), length(terraform.workspace)) == "-preproduction"
-  is-test          = substr(terraform.workspace, length(var.app_name), length(terraform.workspace)) == "-test"
-  is-development   = substr(terraform.workspace, length(var.app_name), length(terraform.workspace)) == "-development"
 }
