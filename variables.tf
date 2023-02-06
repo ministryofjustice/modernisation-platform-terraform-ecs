@@ -143,5 +143,5 @@ variable "vpc_all" {
 }
 
 locals {
-  is-production = substr(terraform.workspace, length(var.app_name), length(terraform.workspace)) == "-production"
+  is-production = endswith(terraform.workspace, "production")
 }

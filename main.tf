@@ -479,7 +479,7 @@ resource "aws_cloudwatch_log_stream" "cloudwatch_stream" {
 }
 
 resource "aws_autoscaling_schedule" "ecs_non_prod_scale_down" {
-  count                  = local.is-production == true ? 1 : 0
+  count                  = local.is-production == false ? 1 : 0
   scheduled_action_name  = "ecs_non_prod_scale_down"
   min_size               = 0
   max_size               = 0
@@ -489,26 +489,26 @@ resource "aws_autoscaling_schedule" "ecs_non_prod_scale_down" {
 }
 
 resource "aws_autoscaling_schedule" "ecs_non_prod_scale_up" {
-  count                   = local.is-production == true ? 1 : 0
+  count                   = local.is-production == false ? 1 : 0
   scheduled_action_name  = "ecs_non_prod_scale_up"
-  min_size               = 1
-  max_size               = 1
-  desired_capacity       = 1
+  desired_capacity       = var.ec2_desired_capacity
+  max_size               = var.ec2_max_size
+  min_size               = var.ec2_min_size
   recurrence             = "0 5 * * *" # 5.00 UTC time or 6.00 London time
   autoscaling_group_name = aws_autoscaling_group.ecs_non_prod_daily.name
 }
 
 resource "aws_autoscaling_group" "ecs_non_prod_daily" {
-  count                   = local.is-production == true ? 1 : 0
+  count                   = local.is-production == false ? 1 : 0
   launch_template {
     id      = aws_launch_template.ec2-launch-template.id
     version = "$Latest"
   }
 
   availability_zones        = "eu-west-2"
-  name                      = "ecs_non_prod_daily"
-  max_size                  = 1
-  min_size                  = 1
+  name                      = "${var.app_name}-ecs-non-prod-daily-autoscale-group"
+  max_size                  = var.ec2_max_size
+  min_size                  = var.ec2_min_size
   health_check_grace_period = 300
   health_check_type         = "ELB"
   force_delete              = true
