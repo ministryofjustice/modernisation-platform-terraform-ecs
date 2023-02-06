@@ -478,13 +478,6 @@ resource "aws_cloudwatch_log_stream" "cloudwatch_stream" {
   log_group_name = aws_cloudwatch_log_group.cloudwatch_group.name
 }
 
-#data "aws_autoscaling_groups" "non_prod_autoscaling" {
-#  filter {
-#    name = "tag:is-production"
-#    values = ["false"]
-#  }
-#}
-
 resource "aws_autoscaling_schedule" "ecs_non_prod_scale_down" {
   count                  = local.is-production == true ? 1 : 0
   scheduled_action_name  = "ecs_non_prod_scale_down"
@@ -496,6 +489,7 @@ resource "aws_autoscaling_schedule" "ecs_non_prod_scale_down" {
 }
 
 resource "aws_autoscaling_schedule" "ecs_non_prod_scale_up" {
+  count                   = local.is-production == true ? 1 : 0
   scheduled_action_name  = "ecs_non_prod_scale_up"
   min_size               = 1
   max_size               = 1
@@ -505,6 +499,7 @@ resource "aws_autoscaling_schedule" "ecs_non_prod_scale_up" {
 }
 
 resource "aws_autoscaling_group" "ecs_non_prod_daily" {
+  count                   = local.is-production == true ? 1 : 0
   launch_template {
     id      = aws_launch_template.ec2-launch-template.id
     version = "$Latest"
