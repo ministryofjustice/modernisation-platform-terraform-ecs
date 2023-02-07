@@ -142,6 +142,12 @@ variable "vpc_all" {
   description = "The full name of the VPC (including environment) used to create resources"
 }
 
+variable "disable_ecs_non_prod_scaling" {
+  type        = bool
+  default     = false
+  description = "The full name of the VPC (including environment) used to create resources"
+}
+
 locals {
   is-production = endswith(terraform.workspace, "production")
 }

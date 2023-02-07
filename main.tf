@@ -479,7 +479,7 @@ resource "aws_cloudwatch_log_stream" "cloudwatch_stream" {
 }
 
 resource "aws_autoscaling_schedule" "ecs_non_prod_scale_down" {
-  count                  = local.is-production == false ? 1 : 0
+  count                  = local.is-production && var.disable_ecs_non_prod_scaling == false ? 1 : 0
   scheduled_action_name  = "ecs_non_prod_scale_down"
   min_size               = 0
   max_size               = 0
@@ -489,7 +489,7 @@ resource "aws_autoscaling_schedule" "ecs_non_prod_scale_down" {
 }
 
 resource "aws_autoscaling_schedule" "ecs_non_prod_scale_up" {
-  count                  = local.is-production == false ? 1 : 0
+  count                  = local.is-production && var.disable_ecs_non_prod_scaling == false ? 1 : 0
   scheduled_action_name  = "ecs_non_prod_scale_up"
   desired_capacity       = var.ec2_desired_capacity
   max_size               = var.ec2_max_size
@@ -499,7 +499,7 @@ resource "aws_autoscaling_schedule" "ecs_non_prod_scale_up" {
 }
 
 resource "aws_autoscaling_group" "ecs_non_prod_daily" {
-  count = local.is-production == false ? 1 : 0
+  count = local.is-production && var.disable_ecs_non_prod_scaling == false ? 1 : 0
   launch_template {
     id      = aws_launch_template.ec2-launch-template.id
     version = "$Latest"
