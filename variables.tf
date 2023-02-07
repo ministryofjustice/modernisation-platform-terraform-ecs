@@ -145,7 +145,7 @@ variable "vpc_all" {
 variable "disable_ecs_non_prod_scaling" {
   type        = bool
   default     = false
-  description = "The full name of the VPC (including environment) used to create resources"
+  description = "Set to true if you would like to disable scaling down in the evenings of your test environments"
 }
 
 locals {
