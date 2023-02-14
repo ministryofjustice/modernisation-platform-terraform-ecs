@@ -15,5 +15,5 @@ output "ecs_task_execution_role_id" {
 
 output "app_scale_down_policy_arn" {
   description = "Displays task definition IAM role ID"
-  value       = module.ecs.app_scale_down_policy_arn
+  value       = module.ecs.ecs_task_execution_policy
 }

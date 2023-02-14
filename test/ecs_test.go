@@ -32,7 +32,7 @@ func TestECSModule(t *testing.T) {
 	service := aws.GetEcsService(t, awsRegion, expectedClusterName, expectedServiceName)
 
 	assert.Regexp(t, regexp.MustCompile(`^arn:aws:ecs:eu-west-2:\d{12}:task-definition*`), taskDefinitionArn)
-	assert.Regexp(t, regexp.MustCompile(`^arn:aws:ecs:eu-west-2:\d{12}:*`), scaleDownPolicy)
+	assert.Regexp(t, regexp.MustCompile(`^arn:aws:autoscaling:eu-west-2:*`), scaleDownPolicy)
 	assert.Regexp(t, regexp.MustCompile(`^arn:aws:ecs:eu-west-2:\d{12}:cluster*`), clusterArn)
 	assert.Regexp(t, regexp.MustCompile(`^*-ecs-task-execution-role`), roleName)
 	assert.Equal(t, "EC2", awsSDK.StringValue(service.LaunchType))
