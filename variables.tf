@@ -139,5 +139,5 @@ variable "user_data" {
 
 variable "vpc_id" {
   type        = string
-  description = "The ID of the VPC (including environment) used to create resources"
+  description = "The ID of the VPC used to create resources"
 }
