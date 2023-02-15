@@ -1,12 +1,11 @@
 module "ecs" {
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=e57c01f26ddc488fe6c83bfdc2817510f44f3b19"
+  source = "../../"
 
   subnet_set_name         = local.subnet_set_name
   vpc_all                 = local.vpc_all
   app_name                = local.application_name
   container_instance_type = local.app_data.accounts[local.environment].container_instance_type
-  environment             = local.environment
   ami_image_id            = data.aws_ami.latest.image_id
   instance_type           = local.app_data.accounts[local.environment].instance_type
   user_data               = base64encode(data.template_file.launch-template.rendered)
@@ -25,6 +24,7 @@ module "ecs" {
   ec2_ingress_rules       = local.ec2_ingress_rules
   ec2_egress_rules        = local.ec2_egress_rules
   tags_common             = local.tags
+  lb_tg_name              = local.app_data.accounts[local.environment].lb_tg_name 
 
   depends_on = [aws_security_group.load_balancer_security_group, aws_lb_target_group.target_group]
 }
