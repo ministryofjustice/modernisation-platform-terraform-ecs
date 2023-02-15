@@ -113,7 +113,7 @@ No modules.
 | <a name="input_task_definition"></a> [task\_definition](#input\_task\_definition) | Task definition to be used by the ECS service | `string` | n/a | yes |
 | <a name="input_task_definition_volume"></a> [task\_definition\_volume](#input\_task\_definition\_volume) | Name of the volume referenced in the sourceVolume parameter of container definition in the mountPoints section | `string` | n/a | yes |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | The configuration used when creating EC2s used for the ECS cluster | `string` | n/a | yes |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC (including environment) used to create resources | `string` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC used to create resources | `string` | n/a | yes |
 
 ## Outputs
 
