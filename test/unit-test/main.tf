@@ -1,6 +1,6 @@
 module "ecs" {
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=e57c01f26ddc488fe6c83bfdc2817510f44f3b19"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=6740c91d2819b6532254366624c8e53d9619f498"
 
   subnet_set_name         = local.subnet_set_name
   vpc_all                 = local.vpc_all
@@ -9,9 +9,9 @@ module "ecs" {
   environment             = local.environment
   ami_image_id            = data.aws_ami.latest.image_id
   instance_type           = local.app_data.accounts[local.environment].instance_type
-  user_data               = base64encode(data.template_file.launch-template.rendered)
+  user_data                = base64encode(templatefile("templates/user-data.txt", { cluster_name = local.application_name }))
   key_name                = local.app_data.accounts[local.environment].key_name
-  task_definition         = data.template_file.task_definition.rendered
+  task_definition         = templatefile("templates/task_definition.json")
   ec2_desired_capacity    = local.app_data.accounts[local.environment].ec2_desired_capacity
   ec2_max_size            = local.app_data.accounts[local.environment].ec2_max_size
   ec2_min_size            = local.app_data.accounts[local.environment].ec2_min_size
@@ -47,7 +47,7 @@ data "aws_vpc" "shared" {
 data "aws_subnets" "shared-public" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.shared.id]
+    values = [var.vpc_id]
   }
   tags = {
     Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public*"
@@ -59,17 +59,6 @@ data "aws_route53_zone" "network-services" {
 
   name         = "modernisation-platform.service.justice.gov.uk."
   private_zone = false
-}
-
-data "template_file" "task_definition" {
-  template = file("templates/task_definition.json")
-}
-
-data "template_file" "launch-template" {
-  template = file("templates/user-data.txt")
-  vars = {
-    cluster_name = local.application_name
-  }
 }
 
 data "aws_route53_zone" "external" {
@@ -130,7 +119,7 @@ resource "aws_lb_target_group" "target_group" {
   name                 = "${local.application_name}-tg-${local.environment}"
   port                 = local.app_data.accounts[local.environment].server_port
   protocol             = "HTTP"
-  vpc_id               = data.aws_vpc.shared.id
+  vpc_id               = var.vpc_id
   target_type          = "instance"
   deregistration_delay = 30
 
