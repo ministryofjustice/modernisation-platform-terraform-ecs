@@ -12,7 +12,7 @@ data "aws_ecs_task_definition" "task_definition" {
 data "aws_subnets" "shared-private" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.shared.id]
+    values = [var.vpc_id]
   }
   tags = {
     Name = "${var.subnet_set_name}-private*"

@@ -47,7 +47,7 @@ data "aws_vpc" "shared" {
 data "aws_subnets" "shared-public" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.shared.id]
+    values = [var.vpc_id]
   }
   tags = {
     Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public*"
@@ -130,7 +130,7 @@ resource "aws_lb_target_group" "target_group" {
   name                 = "${local.application_name}-tg-${local.environment}"
   port                 = local.app_data.accounts[local.environment].server_port
   protocol             = "HTTP"
-  vpc_id               = data.aws_vpc.shared.id
+  vpc_id               = var.vpc_id
   target_type          = "instance"
   deregistration_delay = 30
 
