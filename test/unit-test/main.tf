@@ -9,7 +9,7 @@ module "ecs" {
   environment             = local.environment
   ami_image_id            = data.aws_ami.latest.image_id
   instance_type           = local.app_data.accounts[local.environment].instance_type
-  user_data                = base64encode(templatefile("templates/user-data.txt", { cluster_name = local.application_name }))
+  user_data               = base64encode(templatefile("templates/user-data.txt", { cluster_name = local.application_name }))
   key_name                = local.app_data.accounts[local.environment].key_name
   task_definition         = templatefile("templates/task_definition.json")
   ec2_desired_capacity    = local.app_data.accounts[local.environment].ec2_desired_capacity
