@@ -97,7 +97,7 @@ resource "aws_route53_record" "external_validation" {
   provider = aws.core-network-services
 
   allow_overwrite = true
-  name            = local.domain_name_main[0]
+  name            = "${local.domain_name_main[0]}-${var.GH_RUN}"
   records         = local.domain_record_main
   ttl             = 60
   type            = local.domain_type_main[0]
@@ -108,7 +108,7 @@ resource "aws_route53_record" "external_validation_subdomain" {
   provider = aws.core-vpc
 
   allow_overwrite = true
-  name            = local.domain_name_sub[0]
+  name            = "${local.domain_name_sub[0]}-${var.GH_RUN}"
   records         = local.domain_record_sub
   ttl             = 60
   type            = local.domain_type_sub[0]
@@ -127,7 +127,7 @@ resource "aws_acm_certificate_validation" "external" {
 
 resource "aws_lb_target_group" "target_group" {
   #checkov:skip=CKV_AWS_261
-  name                 = "${local.application_name}-tg-${local.environment}"
+  name                 = "${local.application_name}-tg-${local.environment}-${var.GH_RUN}"
   port                 = local.app_data.accounts[local.environment].server_port
   protocol             = "HTTP"
   vpc_id               = data.aws_vpc.shared.id
@@ -157,7 +157,7 @@ resource "aws_lb_target_group" "target_group" {
 }
 
 resource "aws_security_group" "load_balancer_security_group" {
-  name_prefix = "${local.application_name}-loadbalancer-security-group"
+  name_prefix = "${local.application_name}-loadbalancer-security-group-${var.GH_RUN}"
   description = "controls access to lb"
   vpc_id      = data.aws_vpc.shared.id
 
@@ -206,7 +206,7 @@ resource "aws_lb" "external" {
   #checkov:skip=CKV2_AWS_20
   #checkov:skip=CKV2_AWS_28
   #checkov:skip=CKV_AWS_150
-  name                       = "${local.application_name}-loadbalancer"
+  name                       = "${local.application_name}-loadbalancer-${var.GH_RUN}"
   load_balancer_type         = "application"
   subnets                    = data.aws_subnets.shared-public.ids
   enable_deletion_protection = false
@@ -238,6 +238,6 @@ resource "aws_lb_listener" "listener" {
 }
 
 resource "aws_key_pair" "testing-test" {
-  key_name   = "testing-test"
+  key_name   = "testing-test-${var.GH_RUN}"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCnSAEpvC64hz/xAuzE2ruHVFVCXoHTxSYQDW3hmDTPAO+lcHiMuxWZVyHlGl8sjdIr0uY9vvuIyXaiCmLRon4EppIua+N9WqXpg2W8zEvsWxeJJOLRqkp0kv3XttKAQ4a2u/nbiQO11ylEfsPMKjGrCPTkWvpC0XrGbEKGyCM4ep7oaiFn2CGXZxy7ZkBru39Fz5LCG8tWmlND4TNeUm1x0WkX2t+r5hSkHRedcGtF6dCayAfG/zZ6i8FmHX8HC2KYudAvUa4eLQkLvwfZufDiEtVaxUvpnPP1+tWn1OxqzYvIT69DLTXFWXRxtSclb3ybV2J3Khiki+TKP/LUK1/4ezGDIUWH0pyG5r0yWfDzvJKtHyJqJMQ+szQoVE38xxHTWxRf04KbYfJvlUzp0Bj4wrQ+NLDkjx2qYRjanzGHXLL/J1V5UwHrTFqOeA1R0Ek+nqs4+v9tUK1oOrnUAXC94Nr/VVgKma/KMnwPf2Ij+knaMVq4iIRHrckRulO6KS0= zuri@ZuriGuardiolasMacbookpro.local"
 }
