@@ -9,7 +9,7 @@ data "http" "environments_file" {
 
 locals {
 
-  commit_sha =  substr(var.something, -5, -1)
+  commit_sha = substr(var.something, -5, -1)
 
   application_name = "testing"
 
@@ -30,7 +30,7 @@ locals {
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
   tags = merge(
-    local.json_tags, 
+    local.json_tags,
     {
       GH_RUN = var.GH_RUN
     }
