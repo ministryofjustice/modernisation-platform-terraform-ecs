@@ -4,7 +4,7 @@ module "ecs" {
 
   subnet_set_name         = local.subnet_set_name
   vpc_all                 = local.vpc_all
-  app_name                = local.application_name
+  app_name                = "local.application_name-${var.GH_RUN}"
   container_instance_type = local.app_data.accounts[local.environment].container_instance_type
   ami_image_id            = data.aws_ami.latest.image_id
   instance_type           = local.app_data.accounts[local.environment].instance_type
