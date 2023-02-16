@@ -28,7 +28,7 @@ locals {
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
   tags = merge(
-    local.json_tags, 
+    local.json_tags,
     {
       GH_RUN = var.GH_RUN
     }
