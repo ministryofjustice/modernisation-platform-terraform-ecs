@@ -9,8 +9,6 @@ data "http" "environments_file" {
 
 locals {
 
-  commit_sha =  substr(var.something, -5, -1)
-
   application_name = "testing"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
