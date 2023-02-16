@@ -10,7 +10,7 @@ module "ecs" {
   instance_type           = local.app_data.accounts[local.environment].instance_type
   user_data               = base64encode(templatefile("templates/user-data.txt", { cluster_name = local.application_name }))
   key_name                = local.app_data.accounts[local.environment].key_name
-  task_definition         = templatefile("templates/task_definition.json")
+  task_definition         = templatefile("templates/task_definition.json", {})
   ec2_desired_capacity    = local.app_data.accounts[local.environment].ec2_desired_capacity
   ec2_max_size            = local.app_data.accounts[local.environment].ec2_max_size
   ec2_min_size            = local.app_data.accounts[local.environment].ec2_min_size
