@@ -1,12 +1,11 @@
 module "ecs" {
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs?ref=6740c91d2819b6532254366624c8e53d9619f498"
+  source = "../../"
 
   subnet_set_name         = local.subnet_set_name
-  vpc_all                 = local.vpc_all
+  vpc_id                  = data.aws_vpc.shared.id
   app_name                = local.application_name
   container_instance_type = local.app_data.accounts[local.environment].container_instance_type
-  environment             = local.environment
   ami_image_id            = data.aws_ami.latest.image_id
   instance_type           = local.app_data.accounts[local.environment].instance_type
   user_data               = base64encode(data.template_file.launch-template.rendered)
@@ -25,6 +24,7 @@ module "ecs" {
   ec2_ingress_rules       = local.ec2_ingress_rules
   ec2_egress_rules        = local.ec2_egress_rules
   tags_common             = local.tags
+  lb_tg_name              = aws_lb_target_group.target_group.name
 
   depends_on = [aws_security_group.load_balancer_security_group, aws_lb_target_group.target_group]
 }
@@ -47,7 +47,7 @@ data "aws_vpc" "shared" {
 data "aws_subnets" "shared-public" {
   filter {
     name   = "vpc-id"
-    values = [var.vpc_id]
+    values = [data.aws_vpc.shared.id]
   }
   tags = {
     Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public*"
@@ -130,7 +130,7 @@ resource "aws_lb_target_group" "target_group" {
   name                 = "${local.application_name}-tg-${local.environment}"
   port                 = local.app_data.accounts[local.environment].server_port
   protocol             = "HTTP"
-  vpc_id               = var.vpc_id
+  vpc_id               = data.aws_vpc.shared.id
   target_type          = "instance"
   deregistration_delay = 30
 
