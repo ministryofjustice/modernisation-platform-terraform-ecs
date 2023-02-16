@@ -11,7 +11,7 @@ module "ecs" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-ecs/ecs"
 
   subnet_set_name          = local.subnet_set_name
-  vpc_all                  = local.vpc_all
+  vpc_id                   = local.vpc_id
   app_name                 = local.application_name
   container_instance_type  = local.app_data.accounts[local.environment].container_instance_type
   environment              = local.environment
@@ -85,7 +85,6 @@ No modules.
 | [aws_iam_policy_document.ecs_task_execution_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_lb_target_group.target_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lb_target_group) | data source |
 | [aws_subnets.shared-private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
-| [aws_vpc.shared](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
 ## Inputs
 
@@ -114,7 +113,7 @@ No modules.
 | <a name="input_task_definition"></a> [task\_definition](#input\_task\_definition) | Task definition to be used by the ECS service | `string` | n/a | yes |
 | <a name="input_task_definition_volume"></a> [task\_definition\_volume](#input\_task\_definition\_volume) | Name of the volume referenced in the sourceVolume parameter of container definition in the mountPoints section | `string` | n/a | yes |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | The configuration used when creating EC2s used for the ECS cluster | `string` | n/a | yes |
-| <a name="input_vpc_all"></a> [vpc\_all](#input\_vpc\_all) | The full name of the VPC (including environment) used to create resources | `string` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC used to create resources | `string` | n/a | yes |
 
 ## Outputs
 
