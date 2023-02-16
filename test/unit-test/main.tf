@@ -157,7 +157,7 @@ resource "aws_lb_target_group" "target_group" {
 }
 
 resource "aws_security_group" "load_balancer_security_group" {
-  name_prefix = "${local.application_name}-loadbalancer-security-group-${var.GH_RUN}"
+  name_prefix = "${local.application_name}-lb-security-group-${var.GH_RUN}"
   description = "controls access to lb"
   vpc_id      = data.aws_vpc.shared.id
 
@@ -193,7 +193,7 @@ resource "aws_security_group" "load_balancer_security_group" {
   tags = merge(
     local.tags,
     {
-      Name = "${local.application_name}-loadbalancer-security-group"
+      Name = "${local.application_name}-lb-security-group"
     }
   )
 }
@@ -206,7 +206,7 @@ resource "aws_lb" "external" {
   #checkov:skip=CKV2_AWS_20
   #checkov:skip=CKV2_AWS_28
   #checkov:skip=CKV_AWS_150
-  name                       = "${local.application_name}-loadbalancer-${var.GH_RUN}"
+  name                       = "${local.application_name}-lb-${var.GH_RUN}"
   load_balancer_type         = "application"
   subnets                    = data.aws_subnets.shared-public.ids
   enable_deletion_protection = false
@@ -218,7 +218,7 @@ resource "aws_lb" "external" {
   tags = merge(
     local.tags,
     {
-      Name = "${local.application_name}-external-loadbalancer"
+      Name = "${local.application_name}-external-lb"
     }
   )
 }
