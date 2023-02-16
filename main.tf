@@ -52,7 +52,7 @@ resource "aws_security_group" "cluster_ec2" {
   #checkov:skip=CKV_AWS_23
   name        = "${var.app_name}-cluster-ec2-security-group"
   description = "controls access to the cluster ec2 instance"
-  vpc_id      = data.aws_vpc.shared.id
+  vpc_id      = var.vpc_id
 
   dynamic "ingress" {
     for_each = var.ec2_ingress_rules
