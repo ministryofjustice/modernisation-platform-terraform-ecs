@@ -1,4 +1,4 @@
-data "aws_ecs_task_definition" "task_definition" {
+data "aws_ecs_task_definition" "this" {
   task_definition = "${var.app_name}-task-definition"
   depends_on      = [aws_ecs_task_definition.windows, aws_ecs_task_definition.linux]
 }
