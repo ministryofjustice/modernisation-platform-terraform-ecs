@@ -213,7 +213,7 @@ resource "aws_ecs_cluster_capacity_providers" "ecs_cluster" {
   cluster_name = aws_ecs_cluster.ecs_cluster.name
 }
 
-resource "aws_ecs_task_definition" "windows_ecs_task_definition" {
+resource "aws_ecs_task_definition" "windows" {
   family             = "${var.app_name}-task-definition"
   count              = var.container_instance_type == "windows" ? 1 : 0
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
@@ -236,7 +236,7 @@ resource "aws_ecs_task_definition" "windows_ecs_task_definition" {
   )
 }
 
-resource "aws_ecs_task_definition" "linux_ecs_task_definition" {
+resource "aws_ecs_task_definition" "linux" {
   family             = "${var.app_name}-task-definition"
   network_mode       = var.network_mode
   cpu                = var.container_cpu
@@ -282,7 +282,7 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.ecs_task_execution_role, aws_ecs_task_definition.windows_ecs_task_definition, aws_ecs_task_definition.linux_ecs_task_definition
+    aws_iam_role_policy_attachment.ecs_task_execution_role, aws_ecs_task_definition.windows, aws_ecs_task_definition.linux
   ]
 
   tags = merge(

@@ -1,6 +1,6 @@
 data "aws_ecs_task_definition" "task_definition" {
   task_definition = "${var.app_name}-task-definition"
-  depends_on      = [aws_ecs_task_definition.windows_ecs_task_definition, aws_ecs_task_definition.linux_ecs_task_definition]
+  depends_on      = [aws_ecs_task_definition.windows, aws_ecs_task_definition.linux]
 }
 
 data "aws_subnets" "shared-private" {
