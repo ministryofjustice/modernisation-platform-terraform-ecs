@@ -5,7 +5,7 @@ output "cluster_ec2_security_group_id" {
 
 output "current_task_definition" {
   description = "Displays task definition information and version being used"
-  value       = data.aws_ecs_task_definition.task_definition
+  value       = data.aws_ecs_task_definition.this
 }
 
 output "ecs_service" {
@@ -25,12 +25,12 @@ output "ecs_task_execution_policy" {
 
 output "app_scale_up_policy_arn" {
   description = "ARN for app autoscaling - scaling policy up"
-  value       = aws_appautoscaling_policy.scaling_policy_up.arn
+  value       = aws_appautoscaling_policy.scale_up.arn
 }
 
 output "app_scale_down_policy_arn" {
   description = "ARN for app autoscaling - scaling policy down"
-  value       = aws_appautoscaling_policy.scaling_policy_down.arn
+  value       = aws_appautoscaling_policy.scale_down.arn
 }
 
 output "ec2_autoscaling_group" {

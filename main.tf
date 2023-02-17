@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "cluster-scaling-group" {
   min_size            = var.ec2_min_size
 
   launch_template {
-    id      = aws_launch_template.ec2-launch-template.id
+    id      = aws_launch_template.ec2.id
     version = "$Latest"
   }
 
@@ -70,7 +70,7 @@ resource "aws_security_group" "cluster_ec2" {
 # Note - when updating this you will need to manually terminate the EC2s
 # so that the autoscaling group creates new ones using the new launch template
 
-resource "aws_launch_template" "ec2-launch-template" {
+resource "aws_launch_template" "ec2" {
   name_prefix   = "${var.app_name}-ec2-launch-template"
   image_id      = var.ami_image_id
   instance_type = var.instance_type
@@ -87,7 +87,7 @@ resource "aws_launch_template" "ec2-launch-template" {
   }
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ec2_instance_profile.name
+    name = aws_iam_instance_profile.ec2.name
   }
 
   network_interfaces {
@@ -129,12 +129,12 @@ resource "aws_launch_template" "ec2-launch-template" {
 
 # IAM Role, policy and instance profile (to attach the role to the EC2)
 
-resource "aws_iam_instance_profile" "ec2_instance_profile" {
+resource "aws_iam_instance_profile" "ec2" {
   name = "${var.app_name}-ec2-instance-profile"
-  role = aws_iam_role.ec2_instance_role.name
+  role = aws_iam_role.ec2_instance.name
 }
 
-resource "aws_iam_role" "ec2_instance_role" {
+resource "aws_iam_role" "ec2_instance" {
   name = "${var.app_name}-ec2-instance-role"
 
   assume_role_policy = <<EOF
@@ -196,7 +196,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "attach_ec2_policy" {
-  role       = aws_iam_role.ec2_instance_role.name
+  role       = aws_iam_role.ec2_instance.name
   policy_arn = aws_iam_policy.ec2_instance_policy.arn
 }
 //ECS cluster
@@ -293,7 +293,7 @@ resource "aws_ecs_service" "ecs_service" {
   )
 }
 
-resource "aws_ecs_capacity_provider" "capacity_provider" {
+resource "aws_ecs_capacity_provider" "this" {
   name = "${var.app_name}-capacity-provider"
 
   auto_scaling_group_provider {
@@ -390,7 +390,7 @@ resource "aws_appautoscaling_target" "scaling_target" {
 }
 
 # Automatically scale capacity up by one
-resource "aws_appautoscaling_policy" "scaling_policy_up" {
+resource "aws_appautoscaling_policy" "scale_up" {
   name               = "${var.app_name}-scale-up-policy"
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
@@ -413,7 +413,7 @@ resource "aws_appautoscaling_policy" "scaling_policy_up" {
 }
 
 # Automatically scale capacity down by one
-resource "aws_appautoscaling_policy" "scaling_policy_down" {
+resource "aws_appautoscaling_policy" "scale_down" {
   name               = "${var.app_name}-scale-down-policy"
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
@@ -436,7 +436,7 @@ resource "aws_appautoscaling_policy" "scaling_policy_down" {
 }
 
 # Set up CloudWatch group and log stream and retain logs for 30 days
-resource "aws_cloudwatch_log_group" "cloudwatch_group" {
+resource "aws_cloudwatch_log_group" "this" {
   #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
   name              = "${var.app_name}-ecs"
   retention_in_days = 30
@@ -450,5 +450,5 @@ resource "aws_cloudwatch_log_group" "cloudwatch_group" {
 
 resource "aws_cloudwatch_log_stream" "cloudwatch_stream" {
   name           = "${var.app_name}-log-stream"
-  log_group_name = aws_cloudwatch_log_group.cloudwatch_group.name
+  log_group_name = aws_cloudwatch_log_group.this.name
 }
