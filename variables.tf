@@ -150,5 +150,5 @@ variable "disable_ecs_non_prod_scaling" {
 
 locals {
   is-production = endswith(terraform.workspace, "production")
-  description = "The ID of the VPC used to create resources"
+  description = "To determine if the workspace is production or not"
 }
