@@ -1,9 +1,3 @@
-data "aws_vpc" "shared" {
-  tags = {
-    "Name" = var.vpc_all
-  }
-}
-
 data "aws_ecs_task_definition" "task_definition" {
   task_definition = "${var.app_name}-task-definition"
   depends_on      = [aws_ecs_task_definition.windows_ecs_task_definition, aws_ecs_task_definition.linux_ecs_task_definition]
@@ -12,7 +6,7 @@ data "aws_ecs_task_definition" "task_definition" {
 data "aws_subnets" "shared-private" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.shared.id]
+    values = [var.vpc_id]
   }
   tags = {
     Name = "${var.subnet_set_name}-private*"
@@ -58,7 +52,7 @@ resource "aws_security_group" "cluster_ec2" {
   #checkov:skip=CKV_AWS_23
   name        = "${var.app_name}-cluster-ec2-security-group"
   description = "controls access to the cluster ec2 instance"
-  vpc_id      = data.aws_vpc.shared.id
+  vpc_id      = var.vpc_id
 
   dynamic "ingress" {
     for_each = var.ec2_ingress_rules

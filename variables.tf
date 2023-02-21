@@ -137,7 +137,7 @@ variable "user_data" {
   description = "The configuration used when creating EC2s used for the ECS cluster"
 }
 
-variable "vpc_all" {
+variable "vpc_id" {
   type        = string
   description = "The full name of the VPC (including environment) used to create resources"
 }
@@ -150,4 +150,5 @@ variable "disable_ecs_non_prod_scaling" {
 
 locals {
   is-production = endswith(terraform.workspace, "production")
+  description = "The ID of the VPC used to create resources"
 }

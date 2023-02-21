@@ -16,7 +16,8 @@
       "container_memory": "3072",
       "task_definition_volume": "upload_volume",
       "network_mode": "none",
-      "env_name": "development"
+      "env_name": "development",
+      "lb_tg_name": "test"
     }
   }
 }
